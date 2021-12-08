@@ -1,7 +1,8 @@
-let low = require("lowdb");
-let FileSync = require("lowdb/adapters/FileSync");
-let path = require("path");
-let lodash = require('lodash')
+const low = require('lowdb')
+const FileSync = require('lowdb/adapters/FileSync')
+
+const lodash = require('lodash')
+const shortid = require('shortid')
 
 let sql = require("mysql");
 let db = require("../db.js");
@@ -87,19 +88,32 @@ exports.create_a_player = function (req, res) {
 exports.setTempScore = async function (req, res) {
 
     // Use JSON file for storage
-    const file = join(__dirname, 'tmpScores.json')
-    const adapter = new JSONFile(file)
-    const JSONdb = new Low(adapter)
+    const adapter = new FileSync('tmpScore.json')
+    const JSONdb = new low(adapter)
 
-    await JSONdb.read();
+    let tmpScore = req.body
 
-    db.chain = lodash.chain(JSONdb.data)
+    JSONdb.defaults({match: []}).write();
+    const scores = JSONdb.get('match').find({id:req.body.id}).value();
 
-    let tmpScore = req.body["score"]
-    console.log(tmpScore);
+    if(isObject(scores)) {
+        if (scores["id"] === req.body.id) {
+            if (scores["scoreA"] === req.body.scoreA && scores["scoreB"] === req.body.scoreB) {
+                res.send("same score");
+            } else {
+                res.send("alert")
+            }
+        } else {
+            JSONdb.get("match").push(tmpScore).write();
+            res.send("score added")
+        }
+    }
+    else{
+        JSONdb.get("match").push(tmpScore).write();
+        res.send("score added")
+    }
+}
 
-    const scores = JSONdb.chain
-        .get('scores')
-        .find({id:1})
-        .value();
+function isObject(val) {
+    return val instanceof Object;
 }

@@ -4,9 +4,9 @@
   "description": "Petit environement pour un tournoi",
   "main": "botTournois/index.js",
   "scripts": {
-    "api": "nodemon apiTournois/server.js",
+    "api": "node apiTournois/server.js",
     "bot": "node botTournois/index.js",
-    "site": "nodemon site/route.js"
+    "site": "node site/route.js"
   },
   "author": "Antoine Davet, Jérémie Arcidiacono, Alexandre Pintrand",
   "license": "ISC",
@@ -27,6 +27,7 @@
     "mongoose": "^6.0.13",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.13",
+    "shortid": "^2.2.16",
     "xhr2": "^0.2.1",
     "xmlhttprequest": "^1.8.0"
   }

@@ -1,0 +1,19 @@
+{
+  "match": [
+    {
+      "id": 1,
+      "scoreA": 2,
+      "scoreB": 1
+    },
+    {
+      "id": 2,
+      "scoreA": 0,
+      "scoreB": 2
+    },
+    {
+      "id": 3,
+      "scoreA": 2,
+      "scoreB": 1
+    }
+  ]
+}
