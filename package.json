@@ -1,0 +1,33 @@
+{
+  "name": "Tournoi",
+  "version": "1.0.0",
+  "description": "Petit environement pour un tournoi",
+  "main": "botTournois/index.js",
+  "scripts": {
+    "api": "nodemon apiTournois/server.js",
+    "bot": "node botTournois/index.js",
+    "site": "nodemon site/route.js"
+  },
+  "author": "Antoine Davet, Jérémie Arcidiacono, Alexandre Pintrand",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.14"
+  },
+  "dependencies": {
+    "axios": "^0.24.0",
+    "body-parser": "^1.19.0",
+    "brackets-json-db": "^0.1.0",
+    "brackets-manager": "^1.3.9",
+    "cors": "^2.8.5",
+    "discord.js": "^13.3.1",
+    "express": "^4.17.1",
+    "glob": "^7.2.0",
+    "lodash": "^4.17.21",
+    "lowdb": "^3.0.0",
+    "mongoose": "^6.0.13",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.13",
+    "xhr2": "^0.2.1",
+    "xmlhttprequest": "^1.8.0"
+  }
+}

@@ -1,0 +1,6 @@
+node_modules
+.idea
+botTournois/config.json
+apiTournois/api/config/db.config.js
+prepros.config
+db.json

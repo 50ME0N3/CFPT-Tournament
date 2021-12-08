@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="static/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+    <title>Accueil</title>
+</head>
+<body>
+<header>
+    <div class="px-3 py-2 bg-dark text-white">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+                    <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+                        <use xlink:href="#bootstrap"></use>
+                    </svg>
+                </a>
+
+                <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                    <li>
+                        <a href="/" class="nav-link text-secondary">
+                            Acceuil
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/regles" class="nav-link text-white">
+                            Règles
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/brackets" class="nav-link text-white">
+                            Bracket
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/teams" class="nav-link text-white">
+                            Equipes
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+<main>
+    <div class="flex">
+        <div class="card" style="width: 18rem;">
+            <img src="static/discord.svg" class="card-img-top"/>
+            <div class="card-body">
+                <h5 class="card-title">Discord</h5>
+                <p class="card-text">Venez nous dire bonjours et participer au tournois sur notre discord.</p>
+                <a href="#" class="btn btn-primary">Notre Discord</a>
+            </div>
+        </div>
+
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="static/information.svg"/>
+            <div class="card-body">
+                <h5 class="card-title">Régles</h5>
+                <p class="card-text">Pour en apprendre plus sur le format du tournois et connaitre les régles, clique
+                    sur le lien en dessous.</p>
+                <a href="#" class="btn btn-primary">Les régles</a>
+            </div>
+        </div>
+
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="static/money.svg"/>
+            <div class="card-body">
+                <h5 class="card-title">Cashprize</h5>
+                <p class="card-text">Le cashprize sera en fonction du nombres d'inscrit car il se compose de tous les
+                    frais d'inscriptions.</p>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
