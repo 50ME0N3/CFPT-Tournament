@@ -1,7 +1,7 @@
-import { join, dirname } from 'path'
-import { Low, JSONFile } from 'lowdb'
-import { fileURLToPath } from 'url'
-import lodash from 'lodash'
+let low = require("lowdb");
+let FileSync = require("lowdb/adapters/FileSync");
+let path = require("path");
+let lodash = require('lodash')
 
 let sql = require("mysql");
 let db = require("../db.js");
@@ -98,8 +98,8 @@ exports.setTempScore = async function (req, res) {
     let tmpScore = req.body["score"]
     console.log(tmpScore);
 
-    /*const scores = JSONdb.chain
+    const scores = JSONdb.chain
         .get('scores')
         .find({id:1})
-        .value();*/
+        .value();
 }
