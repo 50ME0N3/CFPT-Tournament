@@ -6,10 +6,11 @@
  */
 
 const axios = require("axios");
-const {Message} = require("discord.js");
+const { Message, Client } = require("discord.js");
 
 module.exports = {
     name: "createTeam",
+    description: "permets de créer une équipe",
     aliases: ['ct'],
 
     /**
@@ -38,14 +39,14 @@ module.exports = {
         //cree une categorie qui met les permissions nécessaire pour le role de l'equipe
         let category = await message.guild.channels.create(teamName, {
             type: 'GUILD_CATEGORY',
-            permissionOverwrites: [{
+            permissionOverwrites:[{
                 id: role, //To make it be seen by a certain role, user an ID instead
                 allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY'], //Allow permissions
             },
-                {
-                    id: message.guild.roles.everyone.id, //To make it be seen by a certain role, user an ID instead
-                    deny: ['VIEW_CHANNEL'], //Allow permissions
-                }],
+            {
+                id: message.guild.roles.everyone.id, //To make it be seen by a certain role, user an ID instead
+                deny: ['VIEW_CHANNEL'], //Allow permissions
+            }],
         });
 
         //créé un salon ecrit pour l'equipe
@@ -74,7 +75,7 @@ module.exports = {
  * @param teamName nom de l'équipe
  * @param discordId id du role
  */
-function sendRequestForTeam(teamName, discordId) {
+function sendRequestForTeam(teamName, discordId){
     const axios = require('axios')
     axios
         .post('http://localhost:3000/teams', {
@@ -96,7 +97,8 @@ function sendRequestForTeam(teamName, discordId) {
  * @param playerId l'id du joueurs
  * @param teamName le nom de l'équipe
  */
-function sendRequestForPlayer(playerName, playerId, teamName) {
+function sendRequestForPlayer(playerName, playerId, teamName){
+    const axios = require('axios')
     axios
         .post('http://localhost:3000/player', {
             teamName: teamName,
@@ -116,5 +118,5 @@ function sendRequestForPlayer(playerName, playerId, teamName) {
  * @returns {number[]} une couleur random
  */
 function getRandomColor() {
-    return [Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256)];
+    return [Math.floor(Math.random()*256),Math.floor(Math.random()*256),Math.floor(Math.random()*256)];
 }

@@ -1,14 +1,8 @@
-/**
- * Projet : botTournois
- * Description : commands - ping
- * Auteur : Alexandre PINTRAND
- * Date : 25/11/2021
- */
-
 const { Message, Client } = require("discord.js");
 
 module.exports = {
      name: "time",
+     description: "retourne le temps",
      aliases: ['t'],
      /**
       *

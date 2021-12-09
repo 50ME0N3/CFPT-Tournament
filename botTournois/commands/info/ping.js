@@ -2,6 +2,7 @@ const { Message, Client } = require("discord.js");
 
 module.exports = {
     name: "ping",
+    description: "retourne le ping du websocket",
     aliases: ['p'],
     /**
      *
