@@ -10,7 +10,6 @@ const {Message, Client} = require("discord.js");
 module.exports = {
     name: "setScore",
     aliases: ['ss'],
-
     /**
      * send the updated score to the website
      *
@@ -19,6 +18,19 @@ module.exports = {
      * @returns {Promise<void>} tkt jsp ce que c'est mais c'est la
      */
     run: async (client, message) => {
-        message.reply("tkt on est la");
+        const args = message.content.slice(1).trim().split(/ +/);
+        console.log(args);
+        axios
+            .post('http://localhost:3000/score', {
+                "id": parseInt(args[1]),
+                "scoreA": parseInt(args[2]),
+                "scoreB": parseInt(args[3])
+            })
+            .then(res => {
+                message.reply(res)
+            })
+            .catch(error => {
+                console.error(error)
+            })
     }
 }

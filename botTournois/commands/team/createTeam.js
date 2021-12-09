@@ -76,7 +76,6 @@ module.exports = {
  * @param discordId id du role
  */
 function sendRequestForTeam(teamName, discordId){
-    const axios = require('axios')
     axios
         .post('http://localhost:3000/teams', {
             teamName: teamName,
@@ -98,7 +97,6 @@ function sendRequestForTeam(teamName, discordId){
  * @param teamName le nom de l'équipe
  */
 function sendRequestForPlayer(playerName, playerId, teamName){
-    const axios = require('axios')
     axios
         .post('http://localhost:3000/player', {
             teamName: teamName,
