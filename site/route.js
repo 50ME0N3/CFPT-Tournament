@@ -49,8 +49,10 @@ app.route("/bracket")
     })
     .put(async (req, res) => {
         let match = req.body
+        console.log(match)
         let updatedMatch
-        if(parseInt(match.opponent1) === 2){
+        if(parseInt(match.scoreA) === 2){
+            console.log("vrai")
             updatedMatch = {
                 id: parseInt(match.matchId),
                 opponent1: {
@@ -64,6 +66,7 @@ app.route("/bracket")
             }
         }
         else{
+            console.log("faux")
             updatedMatch = {
                 id: parseInt(match.matchId),
                 opponent1: {
@@ -76,7 +79,7 @@ app.route("/bracket")
                 }
             }
         }
-
+        console.log(updatedMatch)
         await manager.update.match(updatedMatch);
         res.send("all good");
     })

@@ -7,6 +7,8 @@ const shortid = require('shortid')
 let sql = require("mysql");
 let db = require("../db.js");
 
+const axios = require("axios");
+
 /**
  * return all the team stocked in database
  * @param req request
@@ -100,20 +102,42 @@ exports.setTempScore = async function (req, res) {
         if (scores["id"] === req.body.id) {
             if (scores["scoreA"] === req.body.scoreA && scores["scoreB"] === req.body.scoreB) {
                 res.send("same score");
+                console.log("same score");
+                sendScoreToBracket(scores);
             } else {
-                res.send("alert")
+                res.json({
+
+                })
+                console.log("JEREMIE")
             }
         } else {
             JSONdb.get("match").push(tmpScore).write();
             res.send("score added")
+            console.log("score added")
         }
     }
     else{
         JSONdb.get("match").push(tmpScore).write();
         res.send("score added")
+        console.log("score added")
     }
 }
 
 function isObject(val) {
     return val instanceof Object;
+}
+
+function sendScoreToBracket(scores){
+    axios
+        .put('http://localhost:7000/bracket', {
+            "matchId": parseInt(scores["id"]),
+            "scoreA": parseInt(scores["scoreA"]),
+            "scoreB": parseInt(scores["scoreB"])
+        })
+        .then(res => {
+            console.log("data send");
+        })
+        .catch(error => {
+            console.error(error)
+        })
 }
