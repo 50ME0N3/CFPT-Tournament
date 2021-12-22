@@ -16,21 +16,20 @@ const manager = new BracketsManager(storage);
 
 
 app.get('/', (req, res) => {
-    console.log(__dirname);
-    res.sendFile("C:\\Users\\antoi\\Desktop\\perso\\site\\index.html");
+    res.sendFile(__dirname + "/index.html");
 });
 
 app.get('/teams', (req, res) => {
     console.log(__dirname);
-    res.sendFile("C:\\Users\\antoi\\Desktop\\perso\\site\\team.html");
+    res.sendFile(__dirname + "/team.html");
 });
 
 app.get("/regles", (req, res) => {
-    res.sendFile("C:\\Users\\antoi\\Desktop\\perso\\site\\regles.html");
+    res.sendFile(__dirname + "/regles.html");
 })
 
 app.get("/brackets", (req, res) => {
-    res.sendFile("C:\\Users\\antoi\\Desktop\\perso\\site\\bracket.html");
+    res.sendFile(__dirname + "/bracket.html");
 })
 
 app.route("/bracket")

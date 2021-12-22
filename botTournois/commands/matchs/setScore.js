@@ -39,7 +39,9 @@ module.exports = {
                         client.users.fetch('419779265576435714', false).then((user) => {
                             user.send('un match est cassé');
                         });
-
+                    }
+                    else{
+                        message.reply(res.data)
                     }
                 })
                 .catch(error => {
