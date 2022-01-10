@@ -17,10 +17,12 @@ module.exports = {
      * @param {String[]} args
      */
     run: async (client, message, args) => {
+        // Object with emojis
         const emojis = {
             info: 'ℹ️',
             team: '🧑‍🤝‍🧑'
         }
+        // Retrieve commands folders from the handler
         const directories = [
             ...new Set(client.commands.map(cmd => cmd.directory)),
         ];
@@ -28,15 +30,14 @@ module.exports = {
         const formatString = (str) => 
             `${str[0].toUpperCase()}${str.slice(1).toLowerCase()}`;
 
+        // Retrieve the commands categories
         const categories = directories.map((dir) => {
             const getCommands = client.commands.filter(
                 (cmd) => cmd.directory === dir
             ).map(cmd => {
                 return {
                     name: cmd.name || 'pas de nom pour cette commande',
-                    description: 
-                        cmd.description ||
-                        "pas de description pour cette commande",
+                    description: cmd.description || "pas de description pour cette commande",
                 };
             });
 
@@ -46,10 +47,12 @@ module.exports = {
             }
         });
 
+        // Creates an embed with a description
         const embed = new MessageEmbed().setDescription(
             "Merci de choisir une catégorie dans le menu."
         );
         
+        // Add components to the dropdown list in the menu
         const components = (state) => [
             new MessageActionRow().addComponents(
                 new MessageSelectMenu()
@@ -69,13 +72,16 @@ module.exports = {
             ),
         ];
 
+        // Waits the result and sends the message with the embed the components
         const initialMessage = await message.channel.send({
             embeds: [embed],
             components: components(false),
         });
 
+        // Checks if the user that interacts with the menu is the user who used the command
         const filter = (interaction) => interaction.user.id === message.author.id;
 
+        // Creates a message with the component
         const collector = message.channel.createMessageComponentCollector({ 
             filter, 
             componentType: 'SELECT_MENU', 
@@ -88,6 +94,7 @@ module.exports = {
                 (x) => x.directory.toLowerCase() === directory
             );
 
+            // Shows all commands from a category with their description
             const categoryEmbed = new MessageEmbed()
                 .setTitle(`Commandes : ${directory}`)
                 .setDescription('Voici la liste des commandes')
