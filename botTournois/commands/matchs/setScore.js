@@ -36,12 +36,13 @@ module.exports = {
                 })
                 .then(res => {
                     if(res.data === "alert"){
-                        client.users.fetch('419779265576435714', false).then((user) => {
+                       client.users.fetch('419779265576435714', false).then((user) => {
                             user.send('un match est cassé');
-                        });
+                        })
+                        message.reply("Le score est différent, un message a été envoyé a l'admin. L'id est " + args[1] + " FDP")
                     }
                     else{
-                        message.reply(res.data)
+                        console.log(res)
                     }
                 })
                 .catch(error => {

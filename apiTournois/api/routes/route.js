@@ -2,7 +2,15 @@ const {request, response} = require("express");
 const controller = import("../controllers/tournoisController.js");
 
 module.exports = function (app) {
-    let {list_all_teamWithId, list_all_player, list_all_team, create_a_player, create_a_team, setTempScore} = require("../controllers/tournoisController.js");
+    let {
+        list_all_teamWithId,
+        list_all_player,
+        list_all_team,
+        create_a_player,
+        create_a_team,
+        setTempScore,
+        getReadyStatedMatch
+    } = require("../controllers/tournoisController.js");
 
     console.log()
     app.route('/teams')
@@ -20,4 +28,7 @@ module.exports = function (app) {
 
     app.route('/score')
         .post(setTempScore);
+    app.route('/readyState')
+        .get(getReadyStatedMatch)
+
 }

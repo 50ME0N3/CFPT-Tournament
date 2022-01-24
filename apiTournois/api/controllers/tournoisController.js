@@ -89,10 +89,10 @@ exports.create_a_player = function (req, res) {
 
 exports.setTempScore = async function (req, res) {
 
+    console.log("in")
     // Use JSON file for storage
     const adapter = new FileSync('tmpScore.json')
     const JSONdb = new low(adapter)
-
     let tmpScore = req.body
 
     JSONdb.defaults({match: []}).write();
@@ -105,9 +105,7 @@ exports.setTempScore = async function (req, res) {
                 console.log("same score");
                 sendScoreToBracket(scores);
             } else {
-                res.json({
-
-                })
+                console.log(res.send("alert"))
                 console.log("JEREMIE")
             }
         } else {
@@ -123,6 +121,24 @@ exports.setTempScore = async function (req, res) {
     }
 }
 
+exports.getReadyStatedMatch = async function (req,res) {
+    const file = new FileSync('db.json');
+    const bracket = new low(file);
+    let response = {};
+    let channelToCreate = [];
+    response.channelToCreate = channelToCreate;
+    for (const [key, value] of Object.entries(bracket.get('match').__wrapped__.match)) {
+        console.log(value.opponent1.id);
+        if(value.status == 2){
+            let channel = {
+                "team1": value.opponent1.id,
+                "team2": value.opponent2.id
+            }
+            response.channelToCreate.push(channel);
+        }
+    }
+    res.send(response);
+}
 function isObject(val) {
     return val instanceof Object;
 }

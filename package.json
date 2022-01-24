@@ -27,6 +27,7 @@
     "mongoose": "^6.0.13",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.13",
+    "npm": "^8.3.2",
     "shortid": "^2.2.16",
     "xhr2": "^0.2.1",
     "xmlhttprequest": "^1.8.0"

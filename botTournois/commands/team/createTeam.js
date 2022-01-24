@@ -24,51 +24,61 @@ module.exports = {
         const args = message.content.slice(1).trim().split(/ +/);
         let teamName = args[1];
         let players = message.mentions;
+        console.log(players.users.size)
         //players.users.each(element => console.log(message.guild.members.cache.find(r => r.id === element)));
         //console.log(message.guild.members.cache);
         //console.log(players.members);
         players.members.each(element => console.log(element.user.id));
 
-        //cree le role avec le nom de l'equipe et une couleur aléatoire
-        let role = await message.guild.roles.create({
-            name: teamName,
-            color: getRandomColor(),
-            mentionable: true
-        });
+        if (players.users.size === 5) {
+            //cree le role avec le nom de l'equipe et une couleur aléatoire
+            let role = await message.guild.roles.create({
+                name: teamName,
+                color: getRandomColor(),
+                mentionable: true
+            });
 
-        //cree une categorie qui met les permissions nécessaire pour le role de l'equipe
-        let category = await message.guild.channels.create(teamName, {
-            type: 'GUILD_CATEGORY',
-            permissionOverwrites:[{
-                id: role, //To make it be seen by a certain role, user an ID instead
-                allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY'], //Allow permissions
-            },
-            {
-                id: message.guild.roles.everyone.id, //To make it be seen by a certain role, user an ID instead
-                deny: ['VIEW_CHANNEL'], //Allow permissions
-            }],
-        });
+            //cree une categorie qui met les permissions nécessaire pour le role de l'equipe
+            let category = await message.guild.channels.create(teamName, {
+                type: 'GUILD_CATEGORY',
+                permissionOverwrites: [{
+                    id: role, //To make it be seen by a certain role, user an ID instead
+                    allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY'], //Allow permissions
+                },
+                    {
+                        id: message.guild.roles.everyone.id, //To make it be seen by a certain role, user an ID instead
+                        deny: ['VIEW_CHANNEL'], //Allow permissions
+                    }],
+            });
 
-        //créé un salon ecrit pour l'equipe
-        let Textchannel = await message.guild.channels.create(teamName, {
-            type: "GUILD_TEXT", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
-        })
+            //créé un salon ecrit pour l'equipe
+            let Textchannel = await message.guild.channels.create(teamName, {
+                type: "GUILD_TEXT", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
+            })
 
-        //créé un salon oral pour l'equipe
-        let Voicechannel = await message.guild.channels.create(teamName, {
-            type: "GUILD_VOICE", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
-        })
+            //créé un salon oral pour l'equipe
+            let Voicechannel = await message.guild.channels.create(teamName, {
+                type: "GUILD_VOICE", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
+            })
 
-        //deplace les salons dans la categorie
-        await Textchannel.setParent(category.id);
-        await Voicechannel.setParent(category.id);
-        players.members.each(element => element.roles.add(role));
+            //deplace les salons dans la categorie
+            await Textchannel.setParent(category.id);
+            await Voicechannel.setParent(category.id);
+            players.members.each(element => element.roles.add(role));
 
-        await sendRequestForTeam(teamName, role.id);
-        players.members.each(element =>
-            sendRequestForPlayer(element.user.username, element.user.id, teamName));
+            await sendRequestForTeam(teamName, role.id);
+            players.members.each(element =>
+                sendRequestForPlayer(element.user.username, element.user.id, teamName));
+        }
+        else if(players.users.size < 5){
+            message.reply("il n'y a pas assez de joueurs dans l'équipe")
+        }
+        else{
+            message.reply("il y a trop de joueurs dans l'équipe")
+
+        }
     }
-}
+};
 
 /**
  * Envoie une requête http vers l'api contenant l'id du role et le nom de l'équipe
@@ -118,3 +128,12 @@ function sendRequestForPlayer(playerName, playerId, teamName){
 function getRandomColor() {
     return [Math.floor(Math.random()*256),Math.floor(Math.random()*256),Math.floor(Math.random()*256)];
 }
+
+Object.size = function(obj) {
+    let size = 0,
+        key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
+};
