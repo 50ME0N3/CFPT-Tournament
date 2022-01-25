@@ -5,7 +5,7 @@
  * @project Tournois
  */
 const axios = require("axios");
-const {Message, Client} = require("discord.js");
+const { Message, Client } = require("discord.js");
 
 module.exports = {
     name: "setScore",
@@ -17,15 +17,13 @@ module.exports = {
      * @param message le message
      * @returns {Promise<void>} tkt jsp ce que c'est mais c'est la
      */
-    run: async (client, message) => {
+    run: async(client, message) => {
         const args = message.content.slice(1).trim().split(/ +/);
-        if(args.length < 4){
+        if (args.length < 4) {
             message.reply("la commande est incomplète")
-        }
-        else if(parseInt(args[1]) > 13 || parseInt(args[1]) < 0){
+        } else if (parseInt(args[1]) > 13 || parseInt(args[1]) < 0) {
             message.reply("l'id du match n'éxiste pas")
-        }
-        else if (parseInt(args[2]) > 2 || parseInt(args[3]) > 2) {
+        } else if (parseInt(args[2]) > 2 || parseInt(args[3]) > 2) {
             message.reply("les scores ne peuvent pas être plus grand que 2")
         } else {
             axios
@@ -35,13 +33,12 @@ module.exports = {
                     "scoreB": parseInt(args[3])
                 })
                 .then(res => {
-                    if(res.data === "alert"){
-                       client.users.fetch('419779265576435714', false).then((user) => {
-                            user.send('un match est cassé');
+                    if (res.data === "alert") {
+                        client.users.fetch('419779265576435714', false).then((user) => {
+                            user.send("un match est cassé.  L'id est " + args[1] + " FDP");
                         })
-                        message.reply("Le score est différent, un message a été envoyé a l'admin. L'id est " + args[1] + " FDP")
-                    }
-                    else{
+                        message.reply("Le score est différent, un message a été envoyé a l'admin.")
+                    } else {
                         console.log(res)
                     }
                 })
