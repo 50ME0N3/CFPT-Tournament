@@ -139,6 +139,7 @@ exports.getReadyStatedMatch = async function(req, res) {
     for (const [key, value] of Object.entries(bracket.get('match').__wrapped__.match)) {
         console.log(value.opponent1.id);
         if (value.status == 2) {
+            value.status = 5;
             let channel = {
                 "id": value.id,
                 "team1": value.opponent1.id,

@@ -32,6 +32,16 @@ app.get("/brackets", (req, res) => {
     res.sendFile(__dirname + "/bracket.html");
 })
 
+app.route("/status")
+    .put(async (req,res) => {
+        let changedStatus = {
+            id: parseInt(req.query.id),
+            status: 6
+        }
+        await manager.update.match(changedStatus)
+        res.send("status changed")
+    })
+
 app.route("/bracket")
     .get(async (req, res) => {
         const data = await manager.get.stageData(0);
