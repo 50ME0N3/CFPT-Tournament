@@ -7,6 +7,7 @@
 const axios = require("axios");
 const {json} = require("body-parser");
 const {Message, Client} = require("discord.js");
+const { MessageEmbed } = require('discord.js');
 const bracketDB = require("../../../db.json")
 const fs = require('fs')
 
@@ -27,7 +28,6 @@ module.exports = {
                 .then(async res => {
                     for (const element of res.data.channelToCreate) {
                         let team1, idTeam1, team2, idTeam2, id;
-                        console.log(element)
                         id = element.id;
                         await axios
                             .get('http://localhost:3000/team?id=' + element.team1)
@@ -45,8 +45,7 @@ module.exports = {
                     }
 
                 })
-        }
-        else{
+        } else {
             message.reply("You dont have the permission to that command")
         }
     }
@@ -63,7 +62,7 @@ module.exports = {
  * @param message the discrodJS var
  */
 async function createChannel(id, team1, idTeam1, team2, idTeam2, message) {
-    bracketDB["match"][id].status = 6
+    /*bracketDB["match"][id].status = 6
     console.log(bracketDB["match"][id].status)
     fs.writeFileSync('../db.json', JSON.stringify(bracketDB))
     let category = await message.guild.channels.create(team1 + " vs " + team2, {
@@ -80,11 +79,51 @@ async function createChannel(id, team1, idTeam1, team2, idTeam2, message) {
                 id: message.guild.roles.everyone.id,
                 deny: ['VIEW_CHANNEL'],
             }],
-    });
+    });*/
+
+    const InfoMessage = {
+        color: 0x0099ff,
+        title: `${team1} vs ${team2}`,
+        author: {
+            name: 'someone',
+        },
+        description: 'Information message about the game',
+        fields: [
+            {
+                name: 'Regular field title',
+                value: 'Some value here',
+            },
+            {
+                name: '\u200b',
+                value: '\u200b',
+                inline: false,
+            },
+            {
+                name: 'Inline field title',
+                value: 'Some value here',
+                inline: true,
+            },
+            {
+                name: 'Inline field title',
+                value: 'Some value here',
+                inline: true,
+            },
+            {
+                name: 'Inline field title',
+                value: 'Some value here',
+                inline: true,
+            },
+        ],
+        timestamp: new Date(),
+        footer: {
+            text: 'Some footer text here',
+        },
+    };
+
 
     let textChannel = await message.guild.channels.create(team1 + " vs " + team2, {
         type: "GUILD_TEXT",
     })
-
-    await textChannel.setParent(category.id);
+    textChannel.send({ embeds: [InfoMessage] });
+    //await textChannel.setParent(category.id);
 }

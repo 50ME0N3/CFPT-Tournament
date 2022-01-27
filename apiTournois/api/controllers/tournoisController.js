@@ -21,6 +21,7 @@ exports.list_all_team = function(req, res) {
         Object.keys(result).forEach(function(key) {
             team[key] = result[key].name;
         });
+        console.log("list of all teams")
         console.log(JSON.stringify(team))
         res.send(JSON.stringify(team));
     });
@@ -38,6 +39,7 @@ exports.list_all_teamWithId = function(req, res) {
         Object.keys(result).forEach(function(key) {
             team = Object.values(JSON.parse(JSON.stringify(result)))
         });
+        console.log("list of all teams with id")
         console.log(team);
         res.send(team);
     });
@@ -51,7 +53,6 @@ exports.list_all_teamWithId = function(req, res) {
 exports.create_a_team = function(req, res) {
     db.query("INSERT INTO team(name,discordId) VALUES ('" + req.body["teamName"] + "', '" + req.body["discordId"] + "');", function(err, result, fields) {
         if (err) throw err;
-        console.log(result)
     });
 };
 
@@ -67,6 +68,7 @@ exports.list_all_player = function(req, res) {
         Object.keys(result).forEach(function(key) {
             players[key] = result[key].nickname;
         });
+        console.log("list of all players")
         console.log(JSON.stringify(players))
         res.json(JSON.stringify(players));
     });
@@ -83,7 +85,6 @@ exports.create_a_player = function(req, res) {
 
     db.query("INSERT INTO player(nickname, discordId, dateRegistration, idTeam) SELECT '" + req.body["playerName"] + "', '" + req.body["playerId"] + "', '" + time + "', idTeam from team where name LIKE '" + req.body["teamName"] + "'", function(err, result, fields) {
         if (err) throw err;
-        console.log(result)
     });
 };
 
@@ -94,8 +95,6 @@ exports.create_a_player = function(req, res) {
  */
 exports.setTempScore = async function(req, res) {
 
-    console.log("in")
-        // Use JSON file for storage
     const adapter = new FileSync('tmpScore.json')
     const JSONdb = new low(adapter)
     let tmpScore = req.body
@@ -111,7 +110,7 @@ exports.setTempScore = async function(req, res) {
                 sendScoreToBracket(scores);
             } else {
                 console.log(res.send("alert"))
-                console.log("JEREMIE")
+                console.log("different score")
             }
         } else {
             JSONdb.get("match").push(tmpScore).write();
@@ -121,7 +120,7 @@ exports.setTempScore = async function(req, res) {
     } else {
         JSONdb.get("match").push(tmpScore).write();
         res.send("score added")
-        console.log("score added")
+        console.log("score added to tempScore")
     }
 }
 
@@ -134,21 +133,18 @@ exports.getReadyStatedMatch = async function(req, res) {
     const file = new FileSync('db.json');
     const bracket = new low(file);
     let response = {};
-    let channelToCreate = [];
-    response.channelToCreate = channelToCreate;
+    response.channelToCreate = [];
     for (const [key, value] of Object.entries(bracket.get('match').__wrapped__.match)) {
-        console.log(value.opponent1.id);
-        if (value.status == 2) {
-            value.status = 5;
+        if (value.status === 2) {
             let channel = {
                 "id": value.id,
                 "team1": value.opponent1.id,
                 "team2": value.opponent2.id
             }
             response.channelToCreate.push(channel);
-            console.log(response)
         }
     }
+    console.log("all match with ready state")
     res.send(response);
 }
 
