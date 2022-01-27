@@ -146,6 +146,7 @@ exports.getReadyStatedMatch = async function(req, res) {
                 "team2": value.opponent2.id
             }
             response.channelToCreate.push(channel);
+            console.log(response)
         }
     }
     res.send(response);

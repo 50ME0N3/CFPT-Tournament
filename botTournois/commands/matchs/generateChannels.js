@@ -26,7 +26,9 @@ module.exports = {
                 .get('http://localhost:3000/readyState')
                 .then(async res => {
                     for (const element of res.data.channelToCreate) {
-                        let team1, idTeam1, team2, idTeam2;
+                        let team1, idTeam1, team2, idTeam2, id;
+                        console.log(element)
+                        id = element.id;
                         await axios
                             .get('http://localhost:3000/team?id=' + element.team1)
                             .then(res => {
@@ -39,7 +41,7 @@ module.exports = {
                                 team2 = res.data[0].name;
                                 idTeam2 = res.data[0].discordId;
                             })
-                        await createChannel(team1, idTeam1, team2, idTeam2, message)
+                        await createChannel(id, team1, idTeam1, team2, idTeam2, message)
                     }
 
                 })
@@ -47,22 +49,23 @@ module.exports = {
         else{
             message.reply("You dont have the permission to that command")
         }
-        bracketDB["match"][1].status = 5
-        console.log(bracketDB["match"][1].status)
-        fs.writeFileSync('../../../db.json', JSON.stringify(bracketDB))
     }
 
 }
 
 /**
  * create a channel for both team with the right to access
+ * @param id id of the match
  * @param team1 team name
  * @param idTeam1 discord id
  * @param team2 team name
  * @param idTeam2 discord id
  * @param message the discrodJS var
  */
-async function createChannel(team1, idTeam1, team2, idTeam2, message) {
+async function createChannel(id, team1, idTeam1, team2, idTeam2, message) {
+    bracketDB["match"][id].status = 6
+    console.log(bracketDB["match"][id].status)
+    fs.writeFileSync('../db.json', JSON.stringify(bracketDB))
     let category = await message.guild.channels.create(team1 + " vs " + team2, {
         type: 'GUILD_CATEGORY',
         permissionOverwrites: [{
