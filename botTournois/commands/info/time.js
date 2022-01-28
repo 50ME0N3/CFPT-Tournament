@@ -3,7 +3,7 @@ const { Message, Client } = require("discord.js");
 module.exports = {
   name: "time",
   description: "retourne le temps",
-  aliases: ["t"],
+  aliases: ["t",'time'],
   /**
    *
    * @param {Client} client

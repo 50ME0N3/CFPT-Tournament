@@ -23,6 +23,7 @@ exports.list_all_team = function(req, res) {
         });
         console.log("list of all teams")
         console.log(JSON.stringify(team))
+        console.log("\n\r")
         res.send(JSON.stringify(team));
     });
 };
@@ -41,6 +42,7 @@ exports.list_all_teamWithId = function(req, res) {
         });
         console.log("teams with id")
         console.log(team);
+        console.log("\n\r")
         res.send(team);
     });
 };
@@ -54,6 +56,8 @@ exports.create_a_team = function(req, res) {
     db.query("INSERT INTO team(name,discordId) VALUES ('" + req.body["teamName"] + "', '" + req.body["discordId"] + "');", function(err, result, fields) {
         if (err) throw err;
     });
+    console.log("A team has been created")
+    console.log("\n\r")
 };
 
 /**
@@ -70,6 +74,7 @@ exports.list_all_player = function(req, res) {
         });
         console.log("list of all players")
         console.log(JSON.stringify(players))
+        console.log("\n\r")
         res.json(JSON.stringify(players));
     });
 };
@@ -87,6 +92,7 @@ exports.create_a_player = function(req, res) {
         if (err) throw err;
     });
     console.log("A player has been created ")
+    console.log("\n\r")
 };
 
 /**
@@ -108,19 +114,23 @@ exports.setTempScore = async function(req, res) {
             if (scores["scoreA"] === req.body.scoreA && scores["scoreB"] === req.body.scoreB) {
                 console.log("same score");
                 sendScoreToBracket(scores);
+                console.log("\n\r")
                 res.send("same score");
             } else {
                 console.log("different score")
+                console.log("\n\r")
                 res.send("alert")
             }
         } else {
             JSONdb.get("match").push(tmpScore).write();
             console.log("score added")
+            console.log("\n\r")
             res.send("score added")
         }
     } else {
         JSONdb.get("match").push(tmpScore).write();
         console.log("score added to tempScore")
+        console.log("\n\r")
         res.send("score added")
     }
 }
@@ -146,6 +156,7 @@ exports.getReadyStatedMatch = async function(req, res) {
         }
     }
     console.log("all match with ready state")
+    console.log("\n\r")
     res.send(response);
 }
 
@@ -171,6 +182,7 @@ function sendScoreToBracket(scores) {
         })
         .then(res => {
             console.log("data send to bracket");
+            console.log("\n\r")
         })
         .catch(error => {
             console.error(error)
@@ -182,6 +194,7 @@ exports.getTeamNameWithId = async function(req, res) {
         if (err) throw err;
         console.log("list of all team name with id")
         console.log(result)
+        console.log("\n\r")
         res.send(result)
     });
 }

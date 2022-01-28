@@ -9,7 +9,8 @@ const { Message, Client } = require("discord.js");
 
 module.exports = {
     name: "setScore",
-    aliases: ['ss'],
+    description: "Permet de donner les scores",
+    aliases: ['ss','setScore'],
     /**
      * send the updated score to the website
      *

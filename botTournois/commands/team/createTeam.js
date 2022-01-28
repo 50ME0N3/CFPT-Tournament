@@ -11,7 +11,7 @@ const { Message, Client } = require("discord.js");
 module.exports = {
     name: "createTeam",
     description: "permets de créer une équipe",
-    aliases: ['ct'],
+    aliases: ['ct','createTeam'],
 
     /**
      * Créé le role, les channels et assigne le role aux joueurs

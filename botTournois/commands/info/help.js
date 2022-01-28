@@ -8,7 +8,7 @@ const {
 
 module.exports = {
     name: "help",
-    aliases: ['h'],
+    aliases: ['h','help'],
     description: 'aide pour les commandes du bot',
     /**
      *
