@@ -38,8 +38,11 @@ module.exports = {
                             user.send("un match est cassé.  L'id est " + args[1] + " FDP");
                         })
                         message.reply("Le score est différent, un message a été envoyé a l'admin.")
-                    } else {
-                        console.log(res)
+                    } else if(res.data === "score added") {
+                        message.reply("Le score envoyé a été et est en cours de vérification");
+                    }
+                    else{
+                        message.reply("Les scores ont été vérifés");
                     }
                 })
                 .catch(error => {

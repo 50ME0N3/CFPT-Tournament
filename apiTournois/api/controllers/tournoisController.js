@@ -39,7 +39,7 @@ exports.list_all_teamWithId = function(req, res) {
         Object.keys(result).forEach(function(key) {
             team = Object.values(JSON.parse(JSON.stringify(result)))
         });
-        console.log("list of all teams with id")
+        console.log("teams with id")
         console.log(team);
         res.send(team);
     });
@@ -86,6 +86,7 @@ exports.create_a_player = function(req, res) {
     db.query("INSERT INTO player(nickname, discordId, dateRegistration, idTeam) SELECT '" + req.body["playerName"] + "', '" + req.body["playerId"] + "', '" + time + "', idTeam from team where name LIKE '" + req.body["teamName"] + "'", function(err, result, fields) {
         if (err) throw err;
     });
+    console.log("A player has been created ")
 };
 
 /**
@@ -105,22 +106,22 @@ exports.setTempScore = async function(req, res) {
     if (isObject(scores)) {
         if (scores["id"] === req.body.id) {
             if (scores["scoreA"] === req.body.scoreA && scores["scoreB"] === req.body.scoreB) {
-                res.send("same score");
                 console.log("same score");
                 sendScoreToBracket(scores);
+                res.send("same score");
             } else {
-                console.log(res.send("alert"))
                 console.log("different score")
+                res.send("alert")
             }
         } else {
             JSONdb.get("match").push(tmpScore).write();
-            res.send("score added")
             console.log("score added")
+            res.send("score added")
         }
     } else {
         JSONdb.get("match").push(tmpScore).write();
-        res.send("score added")
         console.log("score added to tempScore")
+        res.send("score added")
     }
 }
 
@@ -169,7 +170,7 @@ function sendScoreToBracket(scores) {
             "scoreB": parseInt(scores["scoreB"])
         })
         .then(res => {
-            console.log("data send");
+            console.log("data send to bracket");
         })
         .catch(error => {
             console.error(error)
@@ -179,6 +180,8 @@ function sendScoreToBracket(scores) {
 exports.getTeamNameWithId = async function(req, res) {
     db.query("SELECT name, discordId FROM team WHERE idTeam = '" + req.query.id + "';", function(err, result, fields) {
         if (err) throw err;
+        console.log("list of all team name with id")
+        console.log(result)
         res.send(result)
     });
 }

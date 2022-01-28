@@ -62,8 +62,7 @@ module.exports = {
  * @param message the discrodJS var
  */
 async function createChannel(id, team1, idTeam1, team2, idTeam2, message) {
-    /*bracketDB["match"][id].status = 6
-    console.log(bracketDB["match"][id].status)
+    bracketDB["match"][id].status = 6
     fs.writeFileSync('../db.json', JSON.stringify(bracketDB))
     let category = await message.guild.channels.create(team1 + " vs " + team2, {
         type: 'GUILD_CATEGORY',
@@ -79,7 +78,7 @@ async function createChannel(id, team1, idTeam1, team2, idTeam2, message) {
                 id: message.guild.roles.everyone.id,
                 deny: ['VIEW_CHANNEL'],
             }],
-    });*/
+    });
 
     const InfoMessage = {
         color: 0x0099ff,
@@ -87,36 +86,18 @@ async function createChannel(id, team1, idTeam1, team2, idTeam2, message) {
         author: {
             name: 'someone',
         },
-        description: 'Information message about the game',
+        description: 'Quelque informations pour les résultats de votre game',
         fields: [
             {
-                name: 'Regular field title',
-                value: 'Some value here',
-            },
-            {
-                name: '\u200b',
-                value: '\u200b',
-                inline: false,
-            },
-            {
-                name: 'Inline field title',
-                value: 'Some value here',
-                inline: true,
-            },
-            {
-                name: 'Inline field title',
-                value: 'Some value here',
-                inline: true,
-            },
-            {
-                name: 'Inline field title',
-                value: 'Some value here',
-                inline: true,
+                name: 'Comment donner les scores ?',
+                value: 'Les scores sont donné via le bot\r\n ' +
+                       'La commande est:\n' +
+                       `!ss ${id} score de l'équipe: ${team1} score de l'équipe: ${team2}`,
             },
         ],
         timestamp: new Date(),
         footer: {
-            text: 'Some footer text here',
+            text: 'CFPT-Tournament',
         },
     };
 
@@ -125,5 +106,5 @@ async function createChannel(id, team1, idTeam1, team2, idTeam2, message) {
         type: "GUILD_TEXT",
     })
     textChannel.send({ embeds: [InfoMessage] });
-    //await textChannel.setParent(category.id);
+    await textChannel.setParent(category.id);
 }
