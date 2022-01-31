@@ -7,12 +7,13 @@
 const axios = require("axios");
 const {json} = require("body-parser");
 const {Message, Client} = require("discord.js");
-const { MessageEmbed } = require('discord.js');
+const {MessageEmbed} = require('discord.js');
 const bracketDB = require("../../../db.json")
 const fs = require('fs')
 
 module.exports = {
     name: "generateChannels",
+    description: "Génère les channels des matchs (réservé aux admin)",
     aliases: ['gc', 'generateChannels'],
     /**
      * generate channel for all match with ready states
@@ -63,7 +64,7 @@ module.exports = {
  */
 async function createChannel(id, team1, idTeam1, team2, idTeam2, message) {
     bracketDB["match"][id].status = 6
-    fs.writeFileSync('../db.json', JSON.stringify(bracketDB))
+    //fs.writeFileSync('../db.json', JSON.stringify(bracketDB))
     let category = await message.guild.channels.create(team1 + " vs " + team2, {
         type: 'GUILD_CATEGORY',
         permissionOverwrites: [{
@@ -81,19 +82,27 @@ async function createChannel(id, team1, idTeam1, team2, idTeam2, message) {
     });
 
     const InfoMessage = {
-        color: 0x0099ff,
+        color: 0x0000ff,
         title: `${team1} vs ${team2}`,
         author: {
             name: 'someone',
         },
-        description: 'Quelque informations pour les résultats de votre game',
+        description: 'Quelques informations pour les résultats de votre game',
         fields: [
             {
                 name: 'Comment donner les scores ?',
                 value: 'Les scores sont donné via le bot\r\n ' +
-                       'La commande est:\n' +
-                       `!ss ${id} score de l'équipe: ${team1} score de l'équipe: ${team2}`,
+                    'La commande est:\n' +
+                    `!ss ${id} <score de l'équipe: ${team1}>  <score de l'équipe: ${team2} >`,
             },
+            {
+                    name: 'En cas de problème',
+                value: 'Si un problème est observé pendant le match vous pouvez envoyer un message à nos admin <@&894538341612138547>'
+            },
+            {
+                name: 'En cas de tentative de triche',
+                value: 'En cas de triche, veuillez contacter nos administrateurs. Penser bien à garder une preuve des scores.'
+            }
         ],
         timestamp: new Date(),
         footer: {
@@ -105,6 +114,6 @@ async function createChannel(id, team1, idTeam1, team2, idTeam2, message) {
     let textChannel = await message.guild.channels.create(team1 + " vs " + team2, {
         type: "GUILD_TEXT",
     })
-    textChannel.send({ embeds: [InfoMessage] });
+    textChannel.send({embeds: [InfoMessage]});
     await textChannel.setParent(category.id);
 }
