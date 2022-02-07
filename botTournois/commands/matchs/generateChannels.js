@@ -10,6 +10,8 @@ const {Message, Client} = require("discord.js");
 const {MessageEmbed} = require('discord.js');
 const bracketDB = require("../../../db.json")
 const fs = require('fs')
+const config = require("../../config.json")
+const {API_KEY} = require("../../../apiTournois/api/config/api.config");
 
 module.exports = {
     name: "generateChannels",
@@ -33,12 +35,14 @@ module.exports = {
                         await axios
                             .get('http://localhost:3000/team?id=' + element.team1)
                             .then(res => {
+                                config.API_KEY,
                                 team1 = res.data[0].name;
                                 idTeam1 = res.data[0].discordId;
                             })
                         await axios
                             .get('http://localhost:3000/team?id=' + element.team2)
                             .then(res => {
+                                config.API_KEY,
                                 team2 = res.data[0].name;
                                 idTeam2 = res.data[0].discordId;
                             })
@@ -101,7 +105,7 @@ async function createChannel(id, team1, idTeam1, team2, idTeam2, message) {
             },
             {
                 name: 'En cas de tentative de triche',
-                value: 'En cas de triche, veuillez contacter nos administrateurs. Penser bien à garder une preuve des scores.'
+                value: 'En cas de triche, veuillez contacter nos administrateurs. Pensez bien à garder une preuve des scores §(screen).'
             }
         ],
         timestamp: new Date(),

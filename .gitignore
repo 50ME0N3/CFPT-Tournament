@@ -2,6 +2,7 @@ node_modules
 .idea
 botTournois/config.json
 apiTournois/api/config/db.config.js
+apiTournois/api/config/api.config.js
 prepros.config
 db.json
 tmpScore.json

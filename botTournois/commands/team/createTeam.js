@@ -7,6 +7,7 @@
 
 const axios = require("axios");
 const { Message, Client } = require("discord.js");
+const config = require("../../config.json")
 
 module.exports = {
     name: "createTeam",
@@ -61,7 +62,7 @@ module.exports = {
                 type: "GUILD_VOICE", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
             })
 
-            //deplace les salons dans la categorie
+            //deplace les salons dans la categorie et fais en sorte que les salons aie les même permissions que la catégorie
             await Textchannel.setParent(category.id);
             await Voicechannel.setParent(category.id);
             players.members.each(element => element.roles.add(role));
@@ -88,6 +89,7 @@ module.exports = {
 function sendRequestForTeam(teamName, discordId){
     axios
         .post('http://localhost:3000/teams', {
+            API_KEY: config.API_KEY,
             teamName: teamName,
             discordId: discordId
         })
@@ -109,6 +111,7 @@ function sendRequestForTeam(teamName, discordId){
 function sendRequestForPlayer(playerName, playerId, teamName){
     axios
         .post('http://localhost:3000/player', {
+            API_KEY: config.API_KEY,
             teamName: teamName,
             playerId: playerId,
             playerName: playerName

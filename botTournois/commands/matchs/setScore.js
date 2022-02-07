@@ -5,12 +5,13 @@
  * @project Tournois
  */
 const axios = require("axios");
-const { Message, Client } = require("discord.js");
+const {Message, Client} = require("discord.js");
+const config = require('../../config.json')
 
 module.exports = {
     name: "setScore",
     description: "Permet de donner les scores",
-    aliases: ['ss','setScore'],
+    aliases: ['ss', 'setScore'],
     /**
      * send the updated score to the website
      *
@@ -18,7 +19,7 @@ module.exports = {
      * @param message le message
      * @returns {Promise<void>} tkt jsp ce que c'est mais c'est la
      */
-    run: async(client, message) => {
+    run: async (client, message) => {
         const args = message.content.slice(1).trim().split(/ +/);
         if (args.length < 4) {
             message.reply("la commande est incomplète")
@@ -29,9 +30,10 @@ module.exports = {
         } else {
             axios
                 .post('http://localhost:3000/score', {
-                    "id": parseInt(args[1]),
-                    "scoreA": parseInt(args[2]),
-                    "scoreB": parseInt(args[3])
+                    API_KEY: config.API_KEY,
+                    id: parseInt(args[1]),
+                    scoreA: parseInt(args[2]),
+                    scoreB: parseInt(args[3])
                 })
                 .then(res => {
                     if (res.data === "alert") {
@@ -39,10 +41,9 @@ module.exports = {
                             user.send("un match est cassé.  L'id est " + args[1] + " FDP");
                         })
                         message.reply("Le score est différent, un message a été envoyé a l'admin.")
-                    } else if(res.data === "score added") {
+                    } else if (res.data === "score added") {
                         message.reply("Le score envoyé a été et est en cours de vérification");
-                    }
-                    else{
+                    } else {
                         message.reply("Les scores ont été vérifés");
                     }
                 })
