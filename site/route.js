@@ -40,8 +40,7 @@ app.route("/status")
         }
         await manager.update.match(changedStatus)
         res.send("status changed")
-    })
-
+    }) 
 app.route("/bracket")
     .get(async (req, res) => {
         const data = await manager.get.stageData(0);
