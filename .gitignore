@@ -6,3 +6,4 @@ apiTournois/api/config/api.config.js
 prepros.config
 db.json
 tmpScore.json
+.log
