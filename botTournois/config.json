@@ -1,0 +1,7 @@
+{
+  "token": "The token of your bot",
+  "prefix": "!",
+  "everyoneMention": true,
+  "hostedBy": true,
+  "API_KEY": "The key of the API (you'll need to choose it)"
+}
