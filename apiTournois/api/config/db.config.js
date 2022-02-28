@@ -1,6 +1,6 @@
 module.exports = {
     HOST: "localhost",
-    USER: "user_appRW",
-    PASSWORD: "1234",
+    USER: "Your database username",
+    PASSWORD: "your database password",
     DB: "cfpt_tournament"
 };
