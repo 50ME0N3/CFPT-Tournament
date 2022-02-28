@@ -6,6 +6,8 @@ const {create} = require("brackets-manager/dist/create");
 const axios = require('axios');
 const bp = require('body-parser')
 const {parse} = require("nodemon/lib/cli");
+const config = require("./config.js");
+const logger = require('../logger.js').logger
 
 app.use(bp.json())
 app.use(bp.urlencoded({ extended: true }))
@@ -47,8 +49,15 @@ app.route("/bracket")
         res.json(data);
     })
     .post((req, res) => {
-        createTournament().then(r => "");
-        res.send("Brackets created")
+        if(req.body["key"] === config.API_KEY){
+            createTournament().then(r => "");
+            res.send("Brackets created")
+            logger.log('info','SITE - The bracket has been generated');
+        }
+        else{
+            logger.log('warn','SITE - A bracket creation has been attempted. But the API KEY was a fake one.');
+        }
+
     })
     .delete((req, res) => {
         manager.delete.stage(0).then(r => "")
@@ -57,7 +66,6 @@ app.route("/bracket")
     })
     .put(async (req, res) => {
         let match = req.body
-        console.log(match)
         let updatedMatch
         if(parseInt(match.scoreA) === 2){
             console.log("vrai")
@@ -74,7 +82,6 @@ app.route("/bracket")
             }
         }
         else{
-            console.log("faux")
             updatedMatch = {
                 id: parseInt(match.matchId),
                 opponent1: {
@@ -87,7 +94,6 @@ app.route("/bracket")
                 }
             }
         }
-        console.log(updatedMatch)
         await manager.update.match(updatedMatch);
         res.send("all good");
     })

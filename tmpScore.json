@@ -19,6 +19,12 @@
       "id": 0,
       "scoreA": 1,
       "scoreB": 2
+    },
+    {
+      "id": "testPostman",
+      "scoreA": "testPostman",
+      "scoreB": "testPostman",
+      "API_KEY": "iaz21Yy%hkEm81IS*xUoV_Ow?GHI$qs"
     }
   ]
 }

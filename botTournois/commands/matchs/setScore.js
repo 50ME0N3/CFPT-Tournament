@@ -7,6 +7,7 @@
 const axios = require("axios");
 const {Message, Client} = require("discord.js");
 const config = require('../../config.json')
+const logger = require('../../../logger.js').logger
 
 module.exports = {
     name: "setScore",
@@ -38,12 +39,15 @@ module.exports = {
                 .then(res => {
                     if (res.data === "alert") {
                         client.users.fetch('419779265576435714', false).then((user) => {
-                            user.send("un match est cassé.  L'id est " + args[1] + " FDP");
+                            user.send("un match est cassé.  L'id est " + args[1]);
                         })
+                        logger.log('warn', `BOT - ${message.author.username} with id ${message.author.id} has set a score. The score is different the admin has been warned. The score was ${args[2]} : ${args[3]}`)
                         message.reply("Le score est différent, un message a été envoyé a l'admin.")
                     } else if (res.data === "score added") {
+                        logger.log('info', `BOT - ${message.author.username} with id ${message.author.id} has set a score.`)
                         message.reply("Le score envoyé a été et est en cours de vérification");
                     } else {
+                        logger.log('info', `BOT - ${message.author.username} with id ${message.author.id} has set a score. The score is the same as the previous one.`)
                         message.reply("Les scores ont été vérifés");
                     }
                 })

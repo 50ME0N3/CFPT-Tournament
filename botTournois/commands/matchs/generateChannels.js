@@ -27,7 +27,7 @@ module.exports = {
     run: async (client, message) => {
         if (message.member.roles.cache.some(role => role.name === 'ORGA')) {
             axios
-                .get('http://localhost:3000/readyState')
+                .get('http://localhost:3000/readyState?' + `API_KEY=` + config.API_KEY)
                 .then(async res => {
                     for (const element of res.data.channelToCreate) {
                         let team1, idTeam1, team2, idTeam2, id;
@@ -35,14 +35,12 @@ module.exports = {
                         await axios
                             .get('http://localhost:3000/team?id=' + element.team1)
                             .then(res => {
-                                config.API_KEY,
                                 team1 = res.data[0].name;
                                 idTeam1 = res.data[0].discordId;
                             })
                         await axios
                             .get('http://localhost:3000/team?id=' + element.team2)
                             .then(res => {
-                                config.API_KEY,
                                 team2 = res.data[0].name;
                                 idTeam2 = res.data[0].discordId;
                             })

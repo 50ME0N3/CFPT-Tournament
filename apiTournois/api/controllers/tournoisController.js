@@ -11,6 +11,8 @@ const config = require("../config/api.config.js");
 const axios = require("axios");
 const {exists} = require("fs");
 
+const logger = require('../../../logger.js').logger
+
 /**
  * return all the team stocked in database
  * @param req request
@@ -23,10 +25,7 @@ exports.list_all_team = function (req, res) {
         Object.keys(result).forEach(function (key) {
             team[key] = result[key].name;
         });
-        console.log("list of all teams")
-        console.log(JSON.stringify(team))
-        console.log("\n\r")
-        res.send(JSON.stringify(team));
+        res.status(200).send(JSON.stringify(team));
     });
 };
 
@@ -42,10 +41,7 @@ exports.list_all_teamWithId = function (req, res) {
         Object.keys(result).forEach(function (key) {
             team = Object.values(JSON.parse(JSON.stringify(result)))
         });
-        console.log("teams with id")
-        console.log(team);
-        console.log("\n\r")
-        res.send(team);
+        res.status(200).send(team);
     });
 };
 
@@ -55,13 +51,14 @@ exports.list_all_teamWithId = function (req, res) {
  * @param res response
  */
 exports.create_a_team = function (req, res) {
-    if (req.query["API_KEY"] === config.API_KEY) {
+    if (req.body["API_KEY"] === config.API_KEY) {
         db.query("INSERT INTO team(name,discordId) VALUES ('" + req.body["teamName"] + "', '" + req.body["discordId"] + "');", function (err, result, fields) {
             if (err) throw err;
         });
-        console.log("A team has been created")
-        console.log("\n\r")
+        logger.log('info',`API - Team with team name: ${req.body["teamName"]}`)
+        res.status(200).send('the team has been created')
     } else {
+        logger.log('warn','API - access forbidden on create team')
         res.status(403).send("Forbidden")
     }
 };
@@ -78,10 +75,7 @@ exports.list_all_player = function (req, res) {
         Object.keys(result).forEach(function (key) {
             players[key] = result[key].nickname;
         });
-        console.log("list of all players")
-        console.log(JSON.stringify(players))
-        console.log("\n\r")
-        res.json(JSON.stringify(players));
+        res.status(200).json(JSON.stringify(players));
     });
 };
 
@@ -91,16 +85,16 @@ exports.list_all_player = function (req, res) {
  * @param res response
  */
 exports.create_a_player = function (req, res) {
-    if (req.query["API_KEY"] === config.API_KEY) {
+    if (req.body["API_KEY"] === config.API_KEY) {
         let date = new Date();
         let time = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
 
         db.query("INSERT INTO player(nickname, discordId, dateRegistration, idTeam) SELECT '" + req.body["playerName"] + "', '" + req.body["playerId"] + "', '" + time + "', idTeam from team where name LIKE '" + req.body["teamName"] + "'", function (err, result, fields) {
             if (err) throw err;
         });
-        console.log("A player has been created ")
-        console.log("\n\r")
+        res.status(200).send('the player has been added')
     } else {
+        logger.log('warn','API - access forbidden on create player')
         res.status(403).send("Forbidden")
     }
 };
@@ -111,7 +105,7 @@ exports.create_a_player = function (req, res) {
  * @param res response
  */
 exports.setTempScore = async function (req, res) {
-    if (req.query["API_KEY"] === config.API_KEY) {
+    if (req.body["API_KEY"] === config.API_KEY) {
         const adapter = new FileSync('tmpScore.json')
         const JSONdb = new low(adapter)
         let tmpScore = req.body
@@ -125,25 +119,26 @@ exports.setTempScore = async function (req, res) {
                     console.log("same score");
                     sendScoreToBracket(scores);
                     console.log("\n\r")
-                    res.send("same score");
+                    res.status(200).send("same score");
                 } else {
                     console.log("different score")
                     console.log("\n\r")
-                    res.send("alert")
+                    res.status(200).send("alert")
                 }
             } else {
                 JSONdb.get("match").push(tmpScore).write();
                 console.log("score added")
                 console.log("\n\r")
-                res.send("score added")
+                res.status(200).send("score added")
             }
         } else {
             JSONdb.get("match").push(tmpScore).write();
             console.log("score added to tempScore")
             console.log("\n\r")
-            res.send("score added")
+            res.status(200).send("score added")
         }
     } else {
+        logger.log('warn','API - access forbidden on Set Temporary scores')
         res.status(403).send("Forbidden")
     }
 }
@@ -171,8 +166,9 @@ exports.getReadyStatedMatch = async function (req, res) {
         }
         console.log("all match with ready state")
         console.log("\n\r")
-        res.send(response);
+        res.status(200).send(response);
     } else {
+        logger.log('warn', 'API - access forbidden on Ready State')
         res.status(403).send("Forbidden")
     }
 }
@@ -207,15 +203,11 @@ function sendScoreToBracket(scores) {
 }
 
 exports.getTeamNameWithId = async function (req, res) {
-    if (req.query["API_KEY"] === config.API_KEY) {
-        db.query("SELECT name, discordId FROM team WHERE idTeam = '" + req.query.id + "';", function (err, result, fields) {
-            if (err) throw err;
-            console.log("list of all team name with id")
-            console.log(result)
-            console.log("\n\r")
-            res.send(result)
-        });
-    } else {
-        res.status(403).send("Forbidden")
-    }
+    db.query("SELECT name, discordId FROM team WHERE idTeam = '" + req.query.id + "';", function (err, result, fields) {
+        if (err) throw err;
+        console.log("list of all team name with id")
+        console.log(result)
+        console.log("\n\r")
+        res.status(200).send(result)
+    });
 }
