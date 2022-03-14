@@ -3,5 +3,8 @@
   "prefix": "!",
   "everyoneMention": true,
   "hostedBy": true,
-  "API_KEY": "The key of the API (you'll need to choose it)"
+  "API_KEY": "The key of the API (you'll need to choose it)",
+   "adminRolesId": "The id of your admin role",
+  "MainAdminUserId": "The id of your main admin",
+  "PayementInWaitingRoleId": "The id of the role for the payement"
 }
