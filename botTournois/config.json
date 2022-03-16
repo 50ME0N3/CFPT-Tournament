@@ -7,4 +7,5 @@
    "adminRolesId": "The id of your admin role",
   "MainAdminUserId": "The id of your main admin",
   "PayementInWaitingRoleId": "The id of the role for the payement"
+  "IpAPI": "The ip of the api"
 }
