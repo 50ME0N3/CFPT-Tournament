@@ -30,7 +30,7 @@ module.exports = {
             message.reply("les scores ne peuvent pas être plus grand que 2")
         } else {
             axios
-                .post('http://localhost:3000/score', {
+                .post(config.IpAPI + 'score', {
                     API_KEY: config.API_KEY,
                     id: parseInt(args[1]),
                     scoreA: parseInt(args[2]),

@@ -27,19 +27,19 @@ module.exports = {
     run: async (client, message) => {
         if (message.member.roles.cache.some(role => role.name === 'Modérateur')) {
             axios
-                .get('http://localhost:3000/readyState?' + `API_KEY=` + config.API_KEY)
+                .get(config.IpAPI + 'readyState?' + `API_KEY=` + config.API_KEY)
                 .then(async res => {
                     for (const element of res.data.channelToCreate) {
                         let team1, idTeam1, team2, idTeam2, id;
                         id = element.id;
                         await axios
-                            .get('http://localhost:3000/team?id=' + element.team1)
+                            .get(config.IpAPI + 'team?id=' + element.team1)
                             .then(res => {
                                 team1 = res.data[0].name;
                                 idTeam1 = res.data[0].discordId;
                             })
                         await axios
-                            .get('http://localhost:3000/team?id=' + element.team2)
+                            .get(config.IpAPI + 'team?id=' + element.team2)
                             .then(res => {
                                 team2 = res.data[0].name;
                                 idTeam2 = res.data[0].discordId;
@@ -67,7 +67,7 @@ module.exports = {
  */
 async function createChannel(id, team1, idTeam1, team2, idTeam2, message) {
     bracketDB["match"][id].status = 6
-    //fs.writeFileSync('../db.json', JSON.stringify(bracketDB))
+    fs.writeFileSync('../db.json', JSON.stringify(bracketDB))
     let category = await message.guild.channels.create(team1 + " vs " + team2, {
         type: 'GUILD_CATEGORY',
         permissionOverwrites: [{

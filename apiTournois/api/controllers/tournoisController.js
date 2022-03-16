@@ -10,6 +10,7 @@ const config = require("../config/api.config.js");
 
 const axios = require("axios");
 const {exists} = require("fs");
+const {IpSite} = require("../config/api.config");
 
 const logger = require('../../../logger.js').logger
 
@@ -189,7 +190,7 @@ function isObject(val) {
  */
 function sendScoreToBracket(scores) {
     axios
-        .put('http://localhost:7000/bracket', {
+        .put(IpSite + 'bracket', {
             "matchId": parseInt(scores["id"]),
             "scoreA": parseInt(scores["scoreA"]),
             "scoreB": parseInt(scores["scoreB"])

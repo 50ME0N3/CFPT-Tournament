@@ -9,6 +9,7 @@ const axios = require("axios");
 const {Message, Client} = require("discord.js");
 const config = require("../../config.json")
 const Console = require("console");
+const {IpSite} = require("../../../apiTournois/api/config/api.config");
 
 module.exports = {
     name: "createTeam",
@@ -29,7 +30,7 @@ module.exports = {
         let MaxTeam = false;
 
         await axios
-            .get('http://localhost:3000/numberOfTeams', {})
+            .get(config.IpAPI + 'numberOfTeams', {})
             .then(result => {
                 MaxTeam = parseInt(result.data) >= 8;
             })
@@ -105,7 +106,7 @@ module.exports = {
  */
 function sendRequestForTeam(teamName, discordId) {
     axios
-        .post('http://localhost:3000/teams', {
+        .post(config.IpAPI + 'teams', {
             API_KEY: config.API_KEY,
             teamName: teamName,
             discordId: discordId
@@ -126,7 +127,7 @@ function sendRequestForTeam(teamName, discordId) {
  */
 function sendRequestForPlayer(playerName, playerId, teamName) {
     axios
-        .post('http://localhost:3000/player', {
+        .post(config.IpAPI + 'player', {
             API_KEY: config.API_KEY,
             teamName: teamName,
             playerId: playerId,
