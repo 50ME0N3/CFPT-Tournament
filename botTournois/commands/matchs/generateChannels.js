@@ -25,7 +25,7 @@ module.exports = {
      * @returns {Promise<void>} tkt jsp ce que c'est mais c'est la
      */
     run: async (client, message) => {
-        if (message.member.roles.cache.some(role => role.name === 'ORGA')) {
+        if (message.member.roles.cache.some(role => role.name === 'Modérateur')) {
             axios
                 .get('http://localhost:3000/readyState?' + `API_KEY=` + config.API_KEY)
                 .then(async res => {
@@ -48,6 +48,7 @@ module.exports = {
                     }
 
                 })
+            message.reply("test")
         } else {
             message.reply("You dont have the permission to that command")
         }
@@ -99,11 +100,11 @@ async function createChannel(id, team1, idTeam1, team2, idTeam2, message) {
             },
             {
                     name: 'En cas de problème',
-                value: 'Si un problème est observé pendant le match vous pouvez envoyer un message à nos admin <@&894538341612138547>'
+                value: 'Si un problème est observé pendant le match vous pouvez envoyer un message à nos admin <@&' + config.adminRolesId + '>'
             },
             {
                 name: 'En cas de tentative de triche',
-                value: 'En cas de triche, veuillez contacter nos administrateurs. Pensez bien à garder une preuve des scores §(screen).'
+                value: 'En cas de triche, veuillez contacter nos administrateurs. Pensez bien à garder une preuve des scores (screen).'
             }
         ],
         timestamp: new Date(),

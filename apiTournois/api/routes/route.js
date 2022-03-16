@@ -11,7 +11,8 @@ module.exports = function(app) {
         create_a_team,
         setTempScore,
         getReadyStatedMatch,
-        getTeamNameWithId
+        getTeamNameWithId,
+        getNumberOfTeams
     } = require("../controllers/tournoisController.js");
 
     console.log()
@@ -36,4 +37,7 @@ module.exports = function(app) {
 
     app.route('/team')
         .get(getTeamNameWithId)
+
+    app.route('/numberOfTeams')
+        .get(getNumberOfTeams)
 }

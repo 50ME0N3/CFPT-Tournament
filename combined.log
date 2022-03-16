@@ -92,3 +92,19 @@
 2022-02-11T10:20:10.480Z warn: API - access forbidden on Ready State
 2022-02-11T10:23:21.065Z warn: API - access forbidden on Ready State
 2022-02-11T10:25:19.951Z warn: API - access forbidden on Ready State
+2022-03-14T09:30:49.997Z info: API - Team with team name: team8
+2022-03-14T09:33:41.557Z info: API - Team with team name: team8
+2022-03-14T09:35:56.225Z info: API - Team with team name: team8
+2022-03-14T09:37:29.958Z info: API - Team with team name: team8
+2022-03-14T12:19:03.931Z info: API - Team with team name: test
+2022-03-14T12:22:15.573Z info: API - Team with team name: test
+2022-03-14T12:22:21.650Z info: API - Team with team name: test
+2022-03-14T13:47:07.651Z info: API - Team with team name: team8
+2022-03-16T07:32:09.956Z warn: SITE - A bracket creation has been attempted. But the API KEY was a fake one.
+2022-03-16T07:33:05.707Z warn: SITE - A bracket creation has been attempted. But the API KEY was a fake one.
+2022-03-16T07:33:30.985Z warn: SITE - A bracket creation has been attempted. But the API KEY was a fake one.
+2022-03-16T07:34:00.061Z warn: SITE - A bracket creation has been attempted. But the API KEY was a fake one.
+2022-03-16T07:35:25.447Z warn: SITE - A bracket creation has been attempted. But the API KEY was a fake one.
+2022-03-16T07:36:46.899Z warn: SITE - A bracket creation has been attempted. But the API KEY was a fake one.
+2022-03-16T07:39:13.048Z warn: SITE - A bracket creation has been attempted. But the API KEY was a fake one.
+2022-03-16T07:40:20.983Z info: SITE - The bracket has been generated

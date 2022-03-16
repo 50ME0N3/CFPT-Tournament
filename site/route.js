@@ -16,21 +16,7 @@ app.use('/static', express.static(__dirname + '/static'));
 const storage = new JsonDatabase();
 const manager = new BracketsManager(storage);
 
-
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + "/index.html");
-});
-
-app.get('/teams', (req, res) => {
-    console.log(__dirname);
-    res.sendFile(__dirname + "/team.html");
-});
-
-app.get("/regles", (req, res) => {
-    res.sendFile(__dirname + "/regles.html");
-})
-
-app.get("/brackets", (req, res) => {
+app.get("/", (req, res) => {
     res.sendFile(__dirname + "/bracket.html");
 })
 
@@ -49,13 +35,14 @@ app.route("/bracket")
         res.json(data);
     })
     .post((req, res) => {
-        if(req.body["key"] === config.API_KEY){
+        if(req.body["API_KEY"] === config.API_KEY){
             createTournament().then(r => "");
             res.send("Brackets created")
             logger.log('info','SITE - The bracket has been generated');
         }
         else{
             logger.log('warn','SITE - A bracket creation has been attempted. But the API KEY was a fake one.');
+            res.send("wrong api key")
         }
 
     })
@@ -116,6 +103,6 @@ async function createTournament() {
     });
 }
 
-const server = app.listen(7000, () => {
+const server = app.listen(443, () => {
     console.log(`Express running → PORT ${server.address().port}`);
 });

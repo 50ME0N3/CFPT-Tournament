@@ -6,13 +6,13 @@
  */
 
 const axios = require("axios");
-const { Message, Client } = require("discord.js");
+const {Message, Client} = require("discord.js");
 const config = require("../../config.json")
 
 module.exports = {
     name: "createTeam",
     description: "permets de créer une équipe",
-    aliases: ['ct','createTeam'],
+    aliases: ['ct', 'createTeam'],
 
     /**
      * Créé le role, les channels et assigne le role aux joueurs
@@ -25,58 +25,71 @@ module.exports = {
         const args = message.content.slice(1).trim().split(/ +/);
         let teamName = args[1];
         let players = message.mentions;
-        console.log(players.users.size)
-        //players.users.each(element => console.log(message.guild.members.cache.find(r => r.id === element)));
-        //console.log(message.guild.members.cache);
-        //console.log(players.members);
-        players.members.each(element => console.log(element.user.id));
+        let MaxTeam = false;
 
-        if (players.users.size === 5) {
-            //cree le role avec le nom de l'equipe et une couleur aléatoire
-            let role = await message.guild.roles.create({
-                name: teamName,
-                color: getRandomColor(),
-                mentionable: true
-            });
-
-            //cree une categorie qui met les permissions nécessaire pour le role de l'equipe
-            let category = await message.guild.channels.create(teamName, {
-                type: 'GUILD_CATEGORY',
-                permissionOverwrites: [{
-                    id: role, //To make it be seen by a certain role, user an ID instead
-                    allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY'], //Allow permissions
-                },
-                    {
-                        id: message.guild.roles.everyone.id, //To make it be seen by a certain role, user an ID instead
-                        deny: ['VIEW_CHANNEL'], //Allow permissions
-                    }],
-            });
-
-            //créé un salon ecrit pour l'equipe
-            let Textchannel = await message.guild.channels.create(teamName, {
-                type: "GUILD_TEXT", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
+        axios
+            .get('http://localhost:3000/numberOfTeams', {})
+            .then(result => {
+                MaxTeam = parseInt(result) >= 8;
+            })
+            .catch(error => {
+                console.error(error)
             })
 
-            //créé un salon oral pour l'equipe
-            let Voicechannel = await message.guild.channels.create(teamName, {
-                type: "GUILD_VOICE", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
+        if (!MaxTeam) {
+            message.reply("Le tournoi est plein. Resté a jour pour savoir si il y a assez d'équipe pour faire un tournoi à 16 équipes");
+            client.users.fetch(config.JeremieUserId, false).then((user) => {
+                user.send("Une équipe a éssayé de s'inscire mais c'est plein");
             })
+            if (players.users.size === 5) {
+                //cree le role avec le nom de l'equipe et une couleur aléatoire
+                let role = await message.guild.roles.create({
+                    name: teamName,
+                    color: getRandomColor(),
+                    mentionable: true
+                });
 
-            //deplace les salons dans la categorie et fais en sorte que les salons aie les même permissions que la catégorie
-            await Textchannel.setParent(category.id);
-            await Voicechannel.setParent(category.id);
-            players.members.each(element => element.roles.add(role));
+                //cree une categorie qui met les permissions nécessaire pour le role de l'equipe
+                let category = await message.guild.channels.create(teamName, {
+                    type: 'GUILD_CATEGORY',
+                    permissionOverwrites: [{
+                        id: role, //To make it be seen by a certain role, user an ID instead
+                        allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY'], //Allow permissions
+                    },
+                        {
+                            id: message.guild.roles.everyone.id, //To make it be seen by a certain role, user an ID instead
+                            deny: ['VIEW_CHANNEL'], //Allow permissions
+                        }],
+                });
 
-            await sendRequestForTeam(teamName, role.id);
-            players.members.each(element =>
-                sendRequestForPlayer(element.user.username, element.user.id, teamName));
-        }
-        else if(players.users.size < 5){
-            message.reply("il n'y a pas assez de joueurs dans l'équipe")
-        }
-        else{
-            message.reply("il y a trop de joueurs dans l'équipe")
+                //créé un salon ecrit pour l'equipe
+                let Textchannel = await message.guild.channels.create(teamName, {
+                    type: "GUILD_TEXT", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
+                })
 
+                //créé un salon oral pour l'equipe
+                let Voicechannel = await message.guild.channels.create(teamName, {
+                    type: "GUILD_VOICE", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
+                })
+
+                //deplace les salons dans la categorie et fais en sorte que les salons aie les même permissions que la catégorie
+                await Textchannel.setParent(category.id);
+                await Voicechannel.setParent(category.id);
+                players.members.each(element => element.roles.add(role));
+                let rolePayement = message.guild.roles.cache.find(r => r.id === config.PayementInWaitingRoleId);
+                players.members.each(element => element.roles.add(rolePayement));
+
+                await sendRequestForTeam(teamName, role.id);
+                players.members.each(element =>
+                    sendRequestForPlayer(element.user.username, element.user.id, teamName));
+
+                message.reply("L'équipe a été crée");
+            } else if (players.users.size < 5) {
+                message.reply("il n'y a pas assez de joueurs dans l'équipe")
+            } else {
+                message.reply("il y a trop de joueurs dans l'équipe")
+
+            }
         }
     }
 };
@@ -86,7 +99,7 @@ module.exports = {
  * @param teamName nom de l'équipe
  * @param discordId id du role
  */
-function sendRequestForTeam(teamName, discordId){
+function sendRequestForTeam(teamName, discordId) {
     axios
         .post('http://localhost:3000/teams', {
             API_KEY: config.API_KEY,
@@ -94,7 +107,6 @@ function sendRequestForTeam(teamName, discordId){
             discordId: discordId
         })
         .then(res => {
-            console.log(`Team en base`)
         })
         .catch(error => {
             console.error(error)
@@ -108,7 +120,7 @@ function sendRequestForTeam(teamName, discordId){
  * @param playerId l'id du joueurs
  * @param teamName le nom de l'équipe
  */
-function sendRequestForPlayer(playerName, playerId, teamName){
+function sendRequestForPlayer(playerName, playerId, teamName) {
     axios
         .post('http://localhost:3000/player', {
             API_KEY: config.API_KEY,
@@ -117,7 +129,6 @@ function sendRequestForPlayer(playerName, playerId, teamName){
             playerName: playerName
         })
         .then(res => {
-            console.log(`player in base`)
         })
         .catch(error => {
             console.error(error)
@@ -129,10 +140,10 @@ function sendRequestForPlayer(playerName, playerId, teamName){
  * @returns {number[]} une couleur random
  */
 function getRandomColor() {
-    return [Math.floor(Math.random()*256),Math.floor(Math.random()*256),Math.floor(Math.random()*256)];
+    return [Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256)];
 }
 
-Object.size = function(obj) {
+Object.size = function (obj) {
     let size = 0,
         key;
     for (key in obj) {

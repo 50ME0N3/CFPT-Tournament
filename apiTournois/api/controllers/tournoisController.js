@@ -165,6 +165,7 @@ exports.getReadyStatedMatch = async function (req, res) {
             }
         }
         console.log("all match with ready state")
+        console.log(response)
         console.log("\n\r")
         res.status(200).send(response);
     } else {
@@ -210,4 +211,11 @@ exports.getTeamNameWithId = async function (req, res) {
         console.log("\n\r")
         res.status(200).send(result)
     });
+}
+
+exports.getNumberOfTeams = async function (req, res) {
+    db.query("SELECT COUNT(*) FROM team", function (err, result, fields){
+        if (err) throw err;
+        res.send(result[0]["COUNT(*)"].toString())
+    })
 }
