@@ -1,0 +1,27 @@
+site_name: CFPT-Tournament
+repo_url: https://github.com/50ME0N3/CFPT-Tournament
+repo_name: 50ME0N3/CFPT-Tournament
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.sections
+    - header.autohide
+  language: en
+  logo: assets/CFPT-Tournament-Favicon.png
+  favicon: assets/CFPT-Tournament-Favicon.png
+  icon:
+    repo: fontawesome/brands/git-alt
+  palette: 
+      - scheme: default
+        primary: pink
+        accent: purple
+        toggle:
+          icon: material/lightbulb-outline 
+          name: Switch to dark mode
+      - scheme: slate 
+        primary: pink
+        accent: purple
+        toggle:
+          icon: material/lightbulb
+          name: Switch to light mode
