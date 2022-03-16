@@ -12,7 +12,8 @@ module.exports = function(app) {
         setTempScore,
         getReadyStatedMatch,
         getTeamNameWithId,
-        getNumberOfTeams
+        getNumberOfTeams,
+        verifyIfAPlayerExist
     } = require("../controllers/tournoisController.js");
 
     console.log()
@@ -40,4 +41,7 @@ module.exports = function(app) {
 
     app.route('/numberOfTeams')
         .get(getNumberOfTeams)
+
+    app.route('/verifyIfPlayerExist')
+        .post(verifyIfAPlayerExist)
 }

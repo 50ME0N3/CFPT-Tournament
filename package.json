@@ -5,7 +5,7 @@
   "main": "botTournois/index.js",
   "scripts": {
     "api": "node apiTournois/server.js",
-    "bot": "node botTournois/index.js",
+    "bot": "node .",
     "site": "node site/route.js"
   },
   "author": "Antoine Davet, Jérémie Arcidiacono, Alexandre Pintrand",

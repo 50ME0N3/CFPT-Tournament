@@ -108,3 +108,15 @@
 2022-03-16T07:36:46.899Z warn: SITE - A bracket creation has been attempted. But the API KEY was a fake one.
 2022-03-16T07:39:13.048Z warn: SITE - A bracket creation has been attempted. But the API KEY was a fake one.
 2022-03-16T07:40:20.983Z info: SITE - The bracket has been generated
+2022-03-16T08:17:00.592Z info: API - Team with team name: test
+2022-03-16T08:19:52.381Z info: API - Team with team name: test
+2022-03-16T08:20:27.689Z info: API - Team with team name: test
+2022-03-16T08:21:25.561Z info: API - Team with team name: test
+2022-03-16T08:21:52.884Z info: API - Team with team name: test
+2022-03-16T08:29:00.878Z info: API - Team with team name: test
+2022-03-16T08:29:44.962Z info: API - Team with team name: test
+2022-03-16T08:30:17.973Z info: API - Team with team name: test
+2022-03-16T08:30:57.913Z info: API - Team with team name: test
+2022-03-16T08:32:38.698Z info: API - Team with team name: test
+2022-03-16T09:12:15.740Z info: API - Team with team name: test
+2022-03-16T09:14:58.391Z info: API - Team with team name: test

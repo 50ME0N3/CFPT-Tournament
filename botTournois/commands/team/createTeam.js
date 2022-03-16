@@ -8,6 +8,7 @@
 const axios = require("axios");
 const {Message, Client} = require("discord.js");
 const config = require("../../config.json")
+const Console = require("console");
 
 module.exports = {
     name: "createTeam",
@@ -27,20 +28,16 @@ module.exports = {
         let players = message.mentions;
         let MaxTeam = false;
 
-        axios
+        await axios
             .get('http://localhost:3000/numberOfTeams', {})
             .then(result => {
-                MaxTeam = parseInt(result) >= 8;
+                MaxTeam = parseInt(result.data) >= 8;
             })
             .catch(error => {
                 console.error(error)
             })
 
-        if (!MaxTeam) {
-            message.reply("Le tournoi est plein. Resté a jour pour savoir si il y a assez d'équipe pour faire un tournoi à 16 équipes");
-            client.users.fetch(config.JeremieUserId, false).then((user) => {
-                user.send("Une équipe a éssayé de s'inscire mais c'est plein");
-            })
+       if (!MaxTeam) {
             if (players.users.size === 5) {
                 //cree le role avec le nom de l'equipe et une couleur aléatoire
                 let role = await message.guild.roles.create({
@@ -48,48 +45,55 @@ module.exports = {
                     color: getRandomColor(),
                     mentionable: true
                 });
+               if(true) {
+                   //cree une categorie qui met les permissions nécessaire pour le role de l'equipe
+                   let category = await message.guild.channels.create(teamName, {
+                       type: 'GUILD_CATEGORY',
+                       permissionOverwrites: [{
+                           id: role, //To make it be seen by a certain role, user an ID instead
+                           allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY'], //Allow permissions
+                       },
+                           {
+                               id: message.guild.roles.everyone.id, //To make it be seen by a certain role, user an ID instead
+                               deny: ['VIEW_CHANNEL'], //Allow permissions
+                           }],
+                   });
 
-                //cree une categorie qui met les permissions nécessaire pour le role de l'equipe
-                let category = await message.guild.channels.create(teamName, {
-                    type: 'GUILD_CATEGORY',
-                    permissionOverwrites: [{
-                        id: role, //To make it be seen by a certain role, user an ID instead
-                        allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY'], //Allow permissions
-                    },
-                        {
-                            id: message.guild.roles.everyone.id, //To make it be seen by a certain role, user an ID instead
-                            deny: ['VIEW_CHANNEL'], //Allow permissions
-                        }],
-                });
+                   //créé un salon ecrit pour l'equipe
+                   let Textchannel = await message.guild.channels.create(teamName, {
+                       type: "GUILD_TEXT", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
+                   })
 
-                //créé un salon ecrit pour l'equipe
-                let Textchannel = await message.guild.channels.create(teamName, {
-                    type: "GUILD_TEXT", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
-                })
+                   //créé un salon oral pour l'equipe
+                   let Voicechannel = await message.guild.channels.create(teamName, {
+                       type: "GUILD_VOICE", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
+                   })
 
-                //créé un salon oral pour l'equipe
-                let Voicechannel = await message.guild.channels.create(teamName, {
-                    type: "GUILD_VOICE", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
-                })
+                   //deplace les salons dans la categorie et fais en sorte que les salons aie les même permissions que la catégorie
+                   await Textchannel.setParent(category.id);
+                   await Voicechannel.setParent(category.id);
+                   players.members.each(element => element.roles.add(role));
+                   let rolePayement = message.guild.roles.cache.find(r => r.id === config.PayementInWaitingRoleId);
+                   players.members.each(element => element.roles.add(rolePayement));
 
-                //deplace les salons dans la categorie et fais en sorte que les salons aie les même permissions que la catégorie
-                await Textchannel.setParent(category.id);
-                await Voicechannel.setParent(category.id);
-                players.members.each(element => element.roles.add(role));
-                let rolePayement = message.guild.roles.cache.find(r => r.id === config.PayementInWaitingRoleId);
-                players.members.each(element => element.roles.add(rolePayement));
+                   await sendRequestForTeam(teamName, role.id);
+                   players.members.each(element =>
+                       sendRequestForPlayer(element.user.username, element.user.id, teamName));
 
-                await sendRequestForTeam(teamName, role.id);
-                players.members.each(element =>
-                    sendRequestForPlayer(element.user.username, element.user.id, teamName));
-
-                message.reply("L'équipe a été crée");
+                   message.reply("L'équipe a été crée");
+               }
             } else if (players.users.size < 5) {
                 message.reply("il n'y a pas assez de joueurs dans l'équipe")
             } else {
                 message.reply("il y a trop de joueurs dans l'équipe")
 
             }
+        }
+        else{
+            message.reply("Désolé, le tournoi est déjà complets. Suivez les annonces pour savoir si des places se libèrent !");
+            client.users.fetch(config.MainAdminUserId, false).then((user) => {
+                user.send("Une équipe a éssayé de s'inscire mais c'est plein");
+            })
         }
     }
 };

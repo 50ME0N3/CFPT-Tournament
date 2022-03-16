@@ -219,3 +219,12 @@ exports.getNumberOfTeams = async function (req, res) {
         res.send(result[0]["COUNT(*)"].toString())
     })
 }
+
+exports.verifyIfAPlayerExist = async function (req, res) {
+    if (req.body["API_KEY"] === config.API_KEY) {
+        db.query("SELECT COUNT(*) FROM `player` WHERE `discordId` = " + req.body["id"] + ";", function (err, result, fields) {
+            if (err) throw err;
+            res.send(result[0]["COUNT(*)"].toString())
+        })
+    }
+}
