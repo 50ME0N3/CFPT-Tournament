@@ -67,15 +67,18 @@ module.exports = {
  */
 async function createChannel(id, team1, idTeam1, team2, idTeam2, message) {
     bracketDB["match"][id].status = 6
-    fs.writeFileSync('../db.json', JSON.stringify(bracketDB))
+    //fs.writeFileSync('../db.json', JSON.stringify(bracketDB))
+    let roleTeam1 = message.guild.roles.cache.find(r => r.id === idTeam1);
+    let roleTeam2 = message.guild.roles.cache.find(r => r.id === idTeam2);
     let category = await message.guild.channels.create(team1 + " vs " + team2, {
         type: 'GUILD_CATEGORY',
+        position: 3,
         permissionOverwrites: [{
-            id: idTeam1,
+            id: roleTeam1,
             allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY'],
         },
             {
-                id: idTeam2,
+                id: roleTeam2,
                 allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY'],
             },
             {

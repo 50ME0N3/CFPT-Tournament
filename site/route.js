@@ -5,7 +5,6 @@ const {JsonDatabase} = require('brackets-json-db');
 const {create} = require("brackets-manager/dist/create");
 const axios = require('axios');
 const bp = require('body-parser')
-const {parse} = require("nodemon/lib/cli");
 const config = require("./config.js");
 const logger = require('../logger.js').logger
 
@@ -47,8 +46,9 @@ app.route("/bracket")
 
     })
     .delete((req, res) => {
-        manager.delete.stage(0).then(r => "")
-        manager.reset.seeding(0).then(r => "");
+        manager.delete.stage(parseInt(req.body.id)).then(r => "")
+        manager.reset.seeding(parseInt(req.body.id)).then(r => "");
+        manager.reset.participant();
         res.send("Brackets deleted");
     })
     .put(async (req, res) => {
@@ -103,6 +103,6 @@ async function createTournament() {
     });
 }
 
-const server = app.listen(443, () => {
+const server = app.listen(7000, () => {
     console.log(`Express running → PORT ${server.address().port}`);
 });

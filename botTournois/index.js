@@ -1,4 +1,3 @@
-console.log("test")
 const { Client, Collection } = require("discord.js");
 
 const client = new Client({

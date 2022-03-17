@@ -223,9 +223,13 @@ exports.getNumberOfTeams = async function (req, res) {
 
 exports.verifyIfAPlayerExist = async function (req, res) {
     if (req.body["API_KEY"] === config.API_KEY) {
-        db.query("SELECT COUNT(*) FROM `player` WHERE `discordId` = " + req.body["id"] + ";", function (err, result, fields) {
+        db.query("SELECT COUNT(*) FROM `player` WHERE `discordId` = " + parseInt(req.body["id"]) + ";", function (err, result, fields) {
             if (err) throw err;
-            res.send(result[0]["COUNT(*)"].toString())
+            res.status(200).send(result[0]["COUNT(*)"].toString())
         })
+    }
+    else{
+        logger.log('warn', 'API - access forbidden on verify player')
+        res.status(403).send("Forbidden")
     }
 }
