@@ -55,9 +55,8 @@ app.route("/bracket")
         let match = req.body
         let updatedMatch
         if(parseInt(match.scoreA) === 2){
-            console.log("vrai")
             updatedMatch = {
-                id: parseInt(match.matchId),
+                 id: parseInt(match.matchId),
                 opponent1: {
                     score: parseInt(match.scoreA),
                     result: 'win'

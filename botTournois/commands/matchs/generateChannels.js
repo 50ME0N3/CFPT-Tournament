@@ -48,7 +48,7 @@ module.exports = {
                     }
 
                 })
-            message.reply("test")
+            message.reply("Les channels ont été créé")
         } else {
             message.reply("You dont have the permission to that command")
         }
@@ -67,7 +67,7 @@ module.exports = {
  */
 async function createChannel(id, team1, idTeam1, team2, idTeam2, message) {
     bracketDB["match"][id].status = 6
-    //fs.writeFileSync('../db.json', JSON.stringify(bracketDB))
+    fs.writeFileSync('../db.json', JSON.stringify(bracketDB))
     let roleTeam1 = message.guild.roles.cache.find(r => r.id === idTeam1);
     let roleTeam2 = message.guild.roles.cache.find(r => r.id === idTeam2);
     let category = await message.guild.channels.create(team1 + " vs " + team2, {

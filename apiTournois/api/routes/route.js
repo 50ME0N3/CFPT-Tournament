@@ -16,7 +16,6 @@ module.exports = function(app) {
         verifyIfAPlayerExist
     } = require("../controllers/tournoisController.js");
 
-    console.log()
     app.route('/teams')
         //send the page to get or create team
         .post(create_a_team)

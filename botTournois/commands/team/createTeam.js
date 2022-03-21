@@ -113,7 +113,6 @@ async function sendRequestForVerifyPlayer(players) {
                 id: parseInt(player[0])
             })
             .then(result => {
-                console.log(parseInt(result.data) >= 1)
                 alreadyExist = parseInt(result.data) >= 1;
             })
             .catch(error => {

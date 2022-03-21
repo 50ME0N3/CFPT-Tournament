@@ -117,25 +117,17 @@ exports.setTempScore = async function (req, res) {
         if (isObject(scores)) {
             if (scores["id"] === req.body.id) {
                 if (scores["scoreA"] === req.body.scoreA && scores["scoreB"] === req.body.scoreB) {
-                    console.log("same score");
                     sendScoreToBracket(scores);
-                    console.log("\n\r")
                     res.status(200).send("same score");
                 } else {
-                    console.log("different score")
-                    console.log("\n\r")
                     res.status(200).send("alert")
                 }
             } else {
                 JSONdb.get("match").push(tmpScore).write();
-                console.log("score added")
-                console.log("\n\r")
                 res.status(200).send("score added")
             }
         } else {
             JSONdb.get("match").push(tmpScore).write();
-            console.log("score added to tempScore")
-            console.log("\n\r")
             res.status(200).send("score added")
         }
     } else {
@@ -165,9 +157,6 @@ exports.getReadyStatedMatch = async function (req, res) {
                 response.channelToCreate.push(channel);
             }
         }
-        console.log("all match with ready state")
-        console.log(response)
-        console.log("\n\r")
         res.status(200).send(response);
     } else {
         logger.log('warn', 'API - access forbidden on Ready State')
@@ -196,8 +185,6 @@ function sendScoreToBracket(scores) {
             "scoreB": parseInt(scores["scoreB"])
         })
         .then(res => {
-            console.log("data send to bracket");
-            console.log("\n\r")
         })
         .catch(error => {
             console.error(error)
@@ -207,9 +194,6 @@ function sendScoreToBracket(scores) {
 exports.getTeamNameWithId = async function (req, res) {
     db.query("SELECT name, discordId FROM team WHERE idTeam = '" + req.query.id + "';", function (err, result, fields) {
         if (err) throw err;
-        console.log("list of all team name with id")
-        console.log(result)
-        console.log("\n\r")
         res.status(200).send(result)
     });
 }
