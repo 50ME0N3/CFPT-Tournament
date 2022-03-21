@@ -25,8 +25,8 @@
 
 <script>
     (async function () {
-        const data = await fetch('http://localhost:7000/bracket')
-            .catch(() => alert('Failed to fetch localhost. Please do `npm run db` or use json-server your own way.'))
+        const data = await fetch('https://bracket.cfpt-tournament.ch/bracket')
+            .catch(() => alert('Erreur de lecture du bracket. Merci de contacter un administrateur.'))
             .then(res => res.json());
 
         // You can manually add locales. English will be used as a fallback if keys are missing.
