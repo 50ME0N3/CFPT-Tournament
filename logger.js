@@ -1,13 +1,19 @@
 const { createLogger, format, transports } = require('winston');
 const { combine, timestamp, printf } = format;
 
+const timezoned = () => {
+    return new Date().toLocaleString('en-US', {
+        timeZone: 'Europe/Bern'
+    });
+}
+
 const myFormat = printf(({ level, message, timestamp }) => {
     return `${timestamp} ${level}: ${message}`;
 });
 
 const logger = createLogger({
     format: combine(
-        timestamp(),
+        format.timestamp({ format: timezoned }),
         myFormat
     ),
     transports: [
