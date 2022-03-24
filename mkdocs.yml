@@ -14,14 +14,14 @@ theme:
     repo: fontawesome/brands/git-alt
   palette: 
       - scheme: default
-        primary: pink
-        accent: purple
+        primary: black
+        accent: cyan
         toggle:
           icon: material/lightbulb-outline 
           name: Switch to dark mode
       - scheme: slate 
-        primary: pink
-        accent: purple
+        primary: white
+        accent: cyan
         toggle:
           icon: material/lightbulb
           name: Switch to light mode
