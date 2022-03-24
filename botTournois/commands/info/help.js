@@ -50,7 +50,7 @@ module.exports = {
         // Creates an embed with a description
         const embed = new MessageEmbed().setDescription(
             "Merci de choisir une catégorie dans le menu."
-        );
+        ).setColor("BLUE");
         
         // Add components to the dropdown list in the menu
         const components = (state) => [
@@ -106,8 +106,8 @@ module.exports = {
                             inline: true,
                         };
                     })
-                );
-
+                )
+                .setColor("BLUE");
             interaction.update({ embeds: [categoryEmbed]})
         });
 
