@@ -124,7 +124,7 @@ module.exports = {
 
             }
         } else {
-            message.reply("Désolé, le tournoi est déjà complets. Suivez les annonces pour savoir si des places se libèrent !");
+            message.reply("Désolé, le tournoi est déjà complet. Suivez les annonces pour savoir si des places se libèrent !");
             client.users.fetch(config.MainAdminUserId, false).then((user) => {
                 user.send("Une équipe a éssayé de s'inscire mais c'est plein");
             })
