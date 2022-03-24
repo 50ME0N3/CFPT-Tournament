@@ -51,10 +51,17 @@ app.post("/bracket", (req, res) => {
     }
 
 })
-app.delete("bracket", (req, res) => {
-    manager.delete.stage(0).then(r => "")
-    manager.reset.seeding(0).then(r => "");
-    res.send("Brackets deleted");
+app.delete("/bracket", (req, res) => {
+    if(req.body["API_KEY"] === config.API_KEY){
+        manager.delete.stage(0).then(r => "")
+        manager.reset.seeding(0).then(r => "");
+        res.send("Brackets deleted");
+        logger.log('info','SITE - The bracket has been deleted');
+    }
+    else{
+        logger.log('warn','SITE - A bracket suppression has been attempted. But the API KEY was a fake one.');
+        res.send("wrong api key")
+    }
 })
 app.put("/bracket", async (req, res) => {
     let match = req.body
