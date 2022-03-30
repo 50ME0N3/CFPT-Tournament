@@ -3,7 +3,7 @@ const { combine, timestamp, printf } = format;
 
 const timezoned = () => {
     return new Date().toLocaleString('en-US', {
-        timeZone: 'Europe/Bern'
+        timeZone: 'Europe/Zurich'
     });
 }
 

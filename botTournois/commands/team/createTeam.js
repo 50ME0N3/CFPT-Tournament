@@ -10,6 +10,7 @@ const {Message, Client} = require("discord.js");
 const config = require("../../config.json")
 const Console = require("console");
 const {IpSite} = require("../../../apiTournois/api/config/api.config");
+const {MessageEmbed} = require('discord.js');
 
 module.exports = {
     name: "createTeam",
@@ -53,7 +54,7 @@ module.exports = {
                     //cree une categorie qui met les permissions nécessaire pour le role de l'equipe
                     let category = await message.guild.channels.create(teamName, {
                         type: 'GUILD_CATEGORY',
-                        position: 3,
+                        position: 2,
                         permissionOverwrites: [{
                             id: role, //To make it be seen by a certain role, user an ID instead
                             allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY'], //Allow permissions
@@ -67,12 +68,39 @@ module.exports = {
                     //créé un salon ecrit pour l'equipe
                     let Textchannel = await message.guild.channels.create(teamName, {
                         type: "GUILD_TEXT", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
-                    })
+                    });
 
                     //créé un salon oral pour l'equipe
                     let Voicechannel = await message.guild.channels.create(teamName, {
                         type: "GUILD_VOICE", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
                     })
+                    const InfoMessage = {
+                        color: 0x0000ff,
+                        title: `${teamName} channels`,
+                        author: {
+                            name: 'jxrx',
+                        },
+                        description: 'Quelques informations pour vos salons',
+                        fields: [
+                            {
+                                name: 'Salon textuel',
+                                value: 'Bienvenue dans le salon textuel privé dédié à votre équipe.',
+                            },
+                            {
+                                name: 'Salon vocal',
+                                value: '<#' + Voicechannel.id +'> vous permet de parler pendant les matchs. N\'oubliez de rester connectés dans le vocal durant vos matchs ! '
+                            },
+                            {
+                                name: 'Paiement',
+                                value: 'Pour terminer votre inscription, souvenez vous d\'ouvrir rapidement un ticket dans le channel <#951499498520203315> .'
+                            }
+                        ],
+                        timestamp: new Date(),
+                        footer: {
+                            text: 'CFPT-Tournament',
+                        },
+                    };
+                    Textchannel.send({embeds: [InfoMessage]});
 
                     //deplace les salons dans la categorie et fais en sorte que les salons aie les même permissions que la catégorie
                     await Textchannel.setParent(category.id);
@@ -83,7 +111,7 @@ module.exports = {
 
                     await sendRequestForTeam(teamName, role.id);
                     players.members.each(element =>
-                        sendRequestForPlayer(element.user.username, element.user.id, teamName));
+                        sendRequestForPlayer(element.user.username, element.user.id, teamName));                    
 
                     message.reply("L'équipe a été crée");
                 } else {
@@ -96,7 +124,7 @@ module.exports = {
 
             }
         } else {
-            message.reply("Désolé, le tournoi est déjà complets. Suivez les annonces pour savoir si des places se libèrent !");
+            message.reply("Désolé, le tournoi est déjà complet. Suivez les annonces pour savoir si des places se libèrent !");
             client.users.fetch(config.MainAdminUserId, false).then((user) => {
                 user.send("Une équipe a éssayé de s'inscire mais c'est plein");
             })
