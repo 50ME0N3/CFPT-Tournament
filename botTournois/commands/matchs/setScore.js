@@ -39,7 +39,7 @@ module.exports = {
                 .then(res => {
                     if (res.data === "alert") {
                         client.users.fetch(config.MainAdminUserId, false).then((user) => {
-                            user.send("un match est cassé.  L'id est " + args[1]);
+                            user.send("il y a un match avec des scores différent.  L'id du match est " + args[1]);
                         })
                         logger.log('warn', `BOT - ${message.author.username} with id ${message.author.id} has set a score. The score is different the admin has been warned. The score was ${args[2]} : ${args[3]}`)
                         message.reply("Le score est différent, un message a été envoyé a l'admin.")
