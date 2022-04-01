@@ -64,37 +64,42 @@ app.delete("/bracket", (req, res) => {
     }
 })
 app.put("/bracket", async (req, res) => {
-    let match = req.body
-    let updatedMatch
-    if(parseInt(match.scoreA) === 2){
-        console.log("vrai")
-        updatedMatch = {
-            id: parseInt(match.matchId),
-            opponent1: {
-                score: parseInt(match.scoreA),
-                result: 'win'
-            },
-            opponent2: {
-                score: parseInt(match.scoreB),
-                result: 'loss'
+    if(req.body["API_KEY"] === config.API_KEY){
+        let match = req.body
+        let updatedMatch
+        if(parseInt(match.scoreA) === 2){
+            updatedMatch = {
+                id: parseInt(match.matchId),
+                opponent1: {
+                    score: parseInt(match.scoreA),
+                    result: 'win'
+                },
+                opponent2: {
+                    score: parseInt(match.scoreB),
+                    result: 'loss'
+                }
             }
         }
+        else{
+            updatedMatch = {
+                id: parseInt(match.matchId),
+                opponent1: {
+                    score: parseInt(match.scoreA),
+                    result: 'loss'
+                },
+                opponent2: {
+                    score: parseInt(match.scoreB),
+                    result: 'win'
+                }
+            }
+        }
+        await manager.update.match(updatedMatch);
+        res.send("all good");
     }
     else{
-        updatedMatch = {
-            id: parseInt(match.matchId),
-            opponent1: {
-                score: parseInt(match.scoreA),
-                result: 'loss'
-            },
-            opponent2: {
-                score: parseInt(match.scoreB),
-                result: 'win'
-            }
-        }
+        logger.log('warn','SITE - A score submission has been attempted. But the API KEY was a fake one.');
+        res.send("wrong api key")
     }
-    await manager.update.match(updatedMatch);
-    res.send("all good");
 })
 
 async function createTournament() {
