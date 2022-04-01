@@ -97,7 +97,7 @@ async function createChannel(id, team1, idTeam1, team2, idTeam2, message) {
         fields: [
             {
                 name: 'Comment donner les scores ?',
-                value: 'Les scores sont donné via le bot\r\n ' +
+                value: 'Les scores sont donnés via le bot\r\n ' +
                     'La commande est:\n' +
                     `!ss ${id} <score de l'équipe: ${team1}>  <score de l'équipe: ${team2} >`,
             },

@@ -9,10 +9,14 @@ let db = require("../db.js");
 const config = require("../config/api.config.js");
 
 const axios = require("axios");
+
 const {exists} = require("fs");
 const {IpSite} = require("../config/api.config");
+const https = require("https");
 
 const logger = require('../../../logger.js').logger
+
+axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false })
 
 /**
  * return all the team stocked in database
@@ -107,7 +111,7 @@ exports.create_a_player = function (req, res) {
  */
 exports.setTempScore = async function (req, res) {
     if (req.body["API_KEY"] === config.API_KEY) {
-        const adapter = new FileSync('tmpScore.json')
+        const adapter = new FileSync(__dirname + '/../../../tmpScore.json')
         const JSONdb = new low(adapter)
         let tmpScore = req.body
 
@@ -143,7 +147,7 @@ exports.setTempScore = async function (req, res) {
  */
 exports.getReadyStatedMatch = async function (req, res) {
     if (req.query["API_KEY"] === config.API_KEY) {
-        const file = new FileSync('db.json');
+        const file = new FileSync(__dirname + '/../../../db.json');
         const bracket = new low(file);
         let response = {};
         response.channelToCreate = [];
@@ -180,9 +184,10 @@ function isObject(val) {
 function sendScoreToBracket(scores) {
     axios
         .put(IpSite + 'bracket', {
-            "matchId": parseInt(scores["id"]),
-            "scoreA": parseInt(scores["scoreA"]),
-            "scoreB": parseInt(scores["scoreB"])
+                "matchId": parseInt(scores["id"]),
+                "scoreA": parseInt(scores["scoreA"]),
+                "scoreB": parseInt(scores["scoreB"]),
+                "API_KEY": config.API_KEY
         })
         .then(res => {
         })
