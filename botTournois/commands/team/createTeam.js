@@ -37,7 +37,7 @@ module.exports = {
                 MaxTeam = parseInt(result.data) >= 8;
             })
             .catch(error => {
-                console.error(error)
+                
             })
 
         if (!MaxTeam) {
@@ -144,7 +144,7 @@ async function sendRequestForVerifyPlayer(players) {
                 alreadyExist = parseInt(result.data) >= 1;
             })
             .catch(error => {
-                console.error(error)
+                
             })
     }
     return alreadyExist;
@@ -165,7 +165,7 @@ function sendRequestForTeam(teamName, discordId) {
         .then(res => {
         })
         .catch(error => {
-            console.error(error)
+            
         })
 
 }
@@ -187,7 +187,7 @@ function sendRequestForPlayer(playerName, playerId, teamName) {
         .then(res => {
         })
         .catch(error => {
-            console.error(error)
+            
         })
 }
 

@@ -192,7 +192,7 @@ function sendScoreToBracket(scores) {
         .then(res => {
         })
         .catch(error => {
-            console.error(error)
+            
         })
 }
 
