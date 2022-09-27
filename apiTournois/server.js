@@ -14,4 +14,3 @@ routes(app); //register the route
 app.listen(port);
 
 
-console.log('Tournament RESTful API server started on: ' + port);

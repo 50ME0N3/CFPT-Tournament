@@ -19,7 +19,7 @@ app.use(bp.json())
 app.use(bp.urlencoded({ extended: true }))
 app.use('/static', express.static(__dirname + '/static'));
 
-console.log(__dirname);
+
 const storage = new JsonDatabase(__dirname + '/../db.json');
 const manager = new BracketsManager(storage);
 
@@ -105,7 +105,7 @@ app.put("/bracket", async (req, res) => {
 async function createTournament() {
     const response = await axios.get("http://83.166.147.192:3000/teamsWithId", {})
         .then((res) => res.data)
-        .catch((error) => console.error(error));
+        .catch((error) => {});
 
     const teams = response.map(team => ({id: team.idTeam, tournament_id: 0, name: team.name}));
     await storage.insert('participant', teams);
@@ -122,4 +122,4 @@ async function createTournament() {
 
 
 const serverHTTPS = https.createServer(options, app).listen(443);
-console.log(`Server running -> PORT 443`)
+
